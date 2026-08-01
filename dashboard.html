@@ -182,6 +182,21 @@
     color: var(--text);
     font-size: 13.5px;
   }
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+  .icon-btn svg { flex: none; }
   .chip-row {
     display: flex;
     flex-wrap: wrap;
@@ -278,6 +293,21 @@
   td.col-title a:hover { color: var(--accent-strong); text-decoration: underline; }
   td.col-title a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
   td.col-date, td.col-owner { color: var(--text-muted); font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  th.col-actions, td.col-actions { width: 1%; white-space: nowrap; text-align: right; }
+  .row-hide {
+    border: none;
+    background: none;
+    color: var(--text-faint);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 7px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.12s, background 0.12s, color 0.12s;
+  }
+  tbody tr:hover .row-hide, tbody tr:focus-within .row-hide { opacity: 1; }
+  .row-hide:hover { color: var(--warn); background: var(--warn-soft); }
   .badge {
     display: inline-block;
     font-size: 11px;
@@ -314,6 +344,183 @@
     td.col-owner { display: none; }
     thead th.col-owner { display: none; }
   }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 12, 20, 0.5);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 16px;
+    z-index: 50;
+    overflow-y: auto;
+  }
+  .modal-overlay[hidden] { display: none; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 560px;
+    max-height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+  }
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    flex: none;
+  }
+  .modal-head h2 {
+    font-size: 16px;
+    margin: 0;
+    font-weight: 600;
+    font-family: var(--serif);
+  }
+  .modal-close {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .modal-close:hover { background: var(--surface-raised); color: var(--text); }
+  .modal-body {
+    padding: 18px 20px 22px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .modal-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .modal-section-head h3 {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+    font-weight: 600;
+    margin: 0;
+  }
+  .modal-section-actions { display: flex; gap: 12px; }
+  .link-btn {
+    border: none;
+    background: none;
+    color: var(--accent-strong);
+    font-size: 12.5px;
+    cursor: pointer;
+    padding: 0;
+    font-weight: 600;
+    font-family: inherit;
+  }
+  .link-btn:hover { text-decoration: underline; }
+
+  .add-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .add-form input {
+    grid-column: span 2;
+    padding: 8px 10px;
+    border-radius: 7px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13.5px;
+    font-family: inherit;
+  }
+  .add-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .add-form button {
+    grid-column: span 2;
+    justify-self: start;
+    padding: 8px 18px;
+    border-radius: 7px;
+    border: none;
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .add-form button:hover { background: var(--accent-strong); }
+  .add-form .hint { grid-column: span 2; font-size: 11.5px; color: var(--text-faint); margin: -2px 0 2px; }
+
+  .manage-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .manage-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .manage-item:first-child { border-top: none; }
+  .manage-item label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+  }
+  .manage-item input[type="checkbox"] {
+    flex: none;
+    accent-color: var(--accent);
+    width: 15px;
+    height: 15px;
+  }
+  .mi-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mi-cat {
+    flex: none;
+    font-size: 10.5px;
+    color: var(--text-faint);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 1px 7px;
+    border-radius: 999px;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mi-delete {
+    flex: none;
+    border: none;
+    background: none;
+    color: var(--warn);
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 2px 4px;
+    font-family: inherit;
+  }
+  .mi-delete:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -343,6 +550,10 @@
       <option value="title_asc">タイトル A→Z</option>
       <option value="category_asc">カテゴリ順</option>
     </select>
+    <button type="button" id="settingsBtn" class="icon-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3 13.09H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      表示設定
+    </button>
   </div>
 
   <div class="chip-row" id="chipRow"></div>
@@ -354,6 +565,38 @@
     <span class="note" id="genNote"></span>
     <span>出典: Google Drive（gurii.gabreh.0516@gmail.com）</span>
   </footer>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h2 id="modalTitle">表示するスプレッドシートの設定</h2>
+      <button type="button" class="modal-close" id="modalClose" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body">
+      <section>
+        <div class="modal-section-head"><h3>スプレッドシートを追加</h3></div>
+        <form id="addForm" class="add-form">
+          <input type="text" id="addTitle" placeholder="タイトル" required>
+          <input type="url" id="addUrl" placeholder="Google スプレッドシートの URL" required>
+          <input type="text" id="addCategory" placeholder="カテゴリ（任意・未入力なら「その他（手動追加）」）" list="categoryList">
+          <datalist id="categoryList"></datalist>
+          <p class="hint">Drive の自動一覧に含まれていないシート（他アカウント所有・未検出のものなど）を手動で追加できます。</p>
+          <button type="submit">一覧に追加</button>
+        </form>
+      </section>
+      <section>
+        <div class="modal-section-head">
+          <h3>表示 / 非表示の切り替え</h3>
+          <div class="modal-section-actions">
+            <button type="button" class="link-btn" id="showAllBtn">すべて表示</button>
+            <button type="button" class="link-btn" id="hideAllBtn">すべて非表示</button>
+          </div>
+        </div>
+        <ul class="manage-list" id="manageList"></ul>
+      </section>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -409,11 +652,34 @@ const DATA = {
   ]
 };
 
-const items = DATA.items;
+const STORAGE_KEY = "kd_dashboard_state_v1";
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { hidden: [], custom: [] };
+    const parsed = JSON.parse(raw);
+    return {
+      hidden: Array.isArray(parsed.hidden) ? parsed.hidden : [],
+      custom: Array.isArray(parsed.custom) ? parsed.custom : [],
+    };
+  } catch (e) {
+    return { hidden: [], custom: [] };
+  }
+}
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+
+let state = loadState();
 let activeCategories = new Set();
 let query = "";
 let sortMode = "modified_desc";
 const collapsedGroups = new Set();
+
+function allItems() { return [...DATA.items, ...state.custom]; }
+function isHidden(id) { return state.hidden.includes(id); }
+function visibleItems() { return allItems().filter(i => !isHidden(i.id)); }
 
 function fmtDate(iso) {
   const d = new Date(iso);
@@ -422,14 +688,17 @@ function fmtDate(iso) {
 }
 
 function renderStats() {
-  const categories = new Set(items.map(i => i.category));
-  const sharedCount = items.filter(i => i.shared).length;
-  const lastUpdated = items.reduce((max, i) => new Date(i.modifiedTime) > new Date(max) ? i.modifiedTime : max, items[0].modifiedTime);
+  const vis = visibleItems();
+  const categories = new Set(vis.map(i => i.category));
+  const sharedCount = vis.filter(i => i.shared).length;
+  const lastUpdated = vis.length
+    ? vis.reduce((max, i) => new Date(i.modifiedTime) > new Date(max) ? i.modifiedTime : max, vis[0].modifiedTime)
+    : null;
   const tiles = [
-    { num: items.length, label: "スプレッドシート総数" },
+    { num: vis.length, label: "表示中のスプレッドシート" },
     { num: categories.size, label: "カテゴリ / フォルダ数" },
     { num: sharedCount, label: "他ユーザー共有" },
-    { num: fmtDate(lastUpdated), label: "最新更新日" },
+    { num: lastUpdated ? fmtDate(lastUpdated) : "—", label: "最新更新日" },
   ];
   document.getElementById("stats").innerHTML = tiles.map(t =>
     `<div class="stat-tile"><div class="num">${t.num}</div><div class="label">${t.label}</div></div>`
@@ -438,7 +707,7 @@ function renderStats() {
 
 function renderChips() {
   const counts = {};
-  items.forEach(i => counts[i.category] = (counts[i.category]||0) + 1);
+  visibleItems().forEach(i => counts[i.category] = (counts[i.category]||0) + 1);
   const cats = Object.keys(counts).sort((a,b) => counts[b]-counts[a]);
   const row = document.getElementById("chipRow");
   row.innerHTML = cats.map(c =>
@@ -479,20 +748,19 @@ function sortItems(list) {
 }
 
 function renderGroups() {
-  const filtered = sortItems(items.filter(matches));
+  const filtered = sortItems(visibleItems().filter(matches));
   const container = document.getElementById("groups");
   const emptyState = document.getElementById("emptyState");
 
   if (!filtered.length) {
     container.innerHTML = "";
     emptyState.style.display = "block";
+    emptyState.textContent = allItems().length
+      ? "条件に一致するスプレッドシートがありません。"
+      : "表示できるスプレッドシートがありません。「表示設定」からすべて表示に戻すか、新しく追加してください。";
     return;
   }
   emptyState.style.display = "none";
-
-  if (sortMode !== "category_asc" && sortMode !== "modified_asc" && sortMode !== "modified_desc" && sortMode !== "title_asc") {
-    // unreachable, keeps default grouping path below
-  }
 
   // group by category, preserving first-seen order per current sort
   const groups = new Map();
@@ -516,12 +784,14 @@ function renderGroups() {
             <th class="col-title">タイトル</th>
             <th class="col-date">最終更新</th>
             <th class="col-owner">所有者</th>
+            <th class="col-actions"></th>
           </tr></thead>
           <tbody>
             ${list.map(item => `<tr>
               <td class="col-title"><a href="${item.url}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a></td>
               <td class="col-date">${fmtDate(item.modifiedTime)}</td>
               <td class="col-owner">${item.shared ? `<span class="badge">共有</span> ${escapeHtml(item.owner.split("@")[0])}` : "自分"}</td>
+              <td class="col-actions"><button type="button" class="row-hide" data-id="${escapeAttr(item.id)}" title="一覧から外す（設定でいつでも再表示可）">×</button></td>
             </tr>`).join("")}
           </tbody>
         </table>
@@ -539,6 +809,79 @@ function renderGroups() {
       group.classList.toggle("collapsed");
     });
   });
+
+  container.querySelectorAll(".row-hide").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      hideItem(btn.dataset.id);
+    });
+  });
+}
+
+function hideItem(id) {
+  if (!state.hidden.includes(id)) state.hidden.push(id);
+  saveState();
+  renderAll();
+}
+
+function renderAll() {
+  renderStats();
+  renderChips();
+  renderGroups();
+  if (!modalOverlay.hidden) renderManageList();
+}
+
+function renderManageList() {
+  const all = allItems().slice().sort((a, b) =>
+    a.category.localeCompare(b.category, "ja") || a.title.localeCompare(b.title, "ja")
+  );
+  const list = document.getElementById("manageList");
+  if (!all.length) {
+    list.innerHTML = `<li class="manage-item" style="color:var(--text-faint);">まだスプレッドシートがありません。</li>`;
+    return;
+  }
+  list.innerHTML = all.map(item => {
+    const custom = item.id.startsWith("custom-");
+    const checked = isHidden(item.id) ? "" : "checked";
+    return `<li class="manage-item">
+      <label>
+        <input type="checkbox" data-id="${escapeAttr(item.id)}" ${checked}>
+        <span class="mi-title">${escapeHtml(item.title)}</span>
+      </label>
+      <span class="mi-cat">${escapeHtml(item.category)}</span>
+      ${custom ? `<button type="button" class="mi-delete" data-id="${escapeAttr(item.id)}">削除</button>` : ""}
+    </li>`;
+  }).join("");
+
+  list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener("change", () => {
+      const id = cb.dataset.id;
+      if (cb.checked) state.hidden = state.hidden.filter(h => h !== id);
+      else if (!state.hidden.includes(id)) state.hidden.push(id);
+      saveState();
+      renderStats();
+      renderChips();
+      renderGroups();
+    });
+  });
+  list.querySelectorAll(".mi-delete").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      state.custom = state.custom.filter(c => c.id !== id);
+      state.hidden = state.hidden.filter(h => h !== id);
+      saveState();
+      renderManageList();
+      renderStats();
+      renderChips();
+      renderGroups();
+    });
+  });
+}
+
+function refreshCategoryList() {
+  const cats = [...new Set(allItems().map(i => i.category))].sort((a, b) => a.localeCompare(b, "ja"));
+  document.getElementById("categoryList").innerHTML =
+    cats.map(c => `<option value="${escapeAttr(c)}"></option>`).join("");
 }
 
 document.getElementById("searchInput").addEventListener("input", (e) => {
@@ -550,12 +893,63 @@ document.getElementById("sortSel").addEventListener("change", (e) => {
   renderGroups();
 });
 
-document.getElementById("genNote").textContent =
-  `最終取得: ${fmtDate(DATA.generatedAt)}（Claude が Google Drive コネクタ経由で取得）`;
+const modalOverlay = document.getElementById("modalOverlay");
+function openModal() {
+  refreshCategoryList();
+  renderManageList();
+  modalOverlay.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+function closeModal() {
+  modalOverlay.hidden = true;
+  document.body.style.overflow = "";
+}
+document.getElementById("settingsBtn").addEventListener("click", openModal);
+document.getElementById("modalClose").addEventListener("click", closeModal);
+modalOverlay.addEventListener("click", (e) => { if (e.target === modalOverlay) closeModal(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modalOverlay.hidden) closeModal(); });
 
-renderStats();
-renderChips();
-renderGroups();
+document.getElementById("showAllBtn").addEventListener("click", () => {
+  state.hidden = [];
+  saveState();
+  renderManageList();
+  renderStats();
+  renderChips();
+  renderGroups();
+});
+document.getElementById("hideAllBtn").addEventListener("click", () => {
+  state.hidden = allItems().map(i => i.id);
+  saveState();
+  renderManageList();
+  renderStats();
+  renderChips();
+  renderGroups();
+});
+
+document.getElementById("addForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const title = document.getElementById("addTitle").value.trim();
+  const url = document.getElementById("addUrl").value.trim();
+  const category = document.getElementById("addCategory").value.trim() || "その他（手動追加）";
+  if (!title || !url) return;
+  const id = "custom-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  state.custom.push({
+    id, title, url, category,
+    owner: "自分", shared: false,
+    modifiedTime: new Date().toISOString(),
+  });
+  saveState();
+  e.target.reset();
+  renderManageList();
+  renderStats();
+  renderChips();
+  renderGroups();
+});
+
+document.getElementById("genNote").textContent =
+  `最終取得: ${fmtDate(DATA.generatedAt)}（Claude が Google Drive コネクタ経由で取得）／表示設定はこのブラウザに保存されます`;
+
+renderAll();
 </script>
 </body>
 </html>
