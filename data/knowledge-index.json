@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-02T13:05:16.670Z",
+  "generatedAt": "2026-08-02T13:08:23.542Z",
   "source": "https://raw.githubusercontent.com/gurii-gabreh/progress-tracker-dashboard/main/data/tasks.json",
   "sheetUrl": "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit",
   "knownRepos": [
@@ -8,9 +8,10 @@
     "gemini-monitor",
     "progress-tracker-dashboard",
     "ai-research-radar",
-    "usage-tracker"
+    "usage-tracker",
+    "Knowledge-Dashboard"
   ],
-  "entryCount": 30,
+  "entryCount": 31,
   "entries": [
     {
       "repo": "progress-tracker-dashboard",
@@ -546,6 +547,24 @@
       "issues": "使用量ログへの自動記録(各Routine側がタスク着手・完了のたびに書き込む部分)は、新ダッシュボードのタブ構成が固まってから別途各Routineへ依頼する必要があり、まだ着手していない。",
       "manualSetup": "",
       "note": "【作業タスク】新しいリポジトリ・専用ルームを作ってユーザー(または専用ルーム)が構築する想定。共有Routineの実装対象ではない。",
+      "output": "",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "Knowledge-Dashboard",
+      "task": "ナレッジ管理ダッシュボード",
+      "status": "対応中",
+      "priority": "中",
+      "category": "manual",
+      "updated": "2026-08-02",
+      "detail": "・目的: progress-tracker-dashboardが持つ各プロジェクトの実装知見(detail/issues/manualSetup等)を横断的に集約し、(1)人が検索・閲覧できるダッシュボードと(2)他のClaude Codeセッションが着手前に参考値として機械的に取得できるJSONの両方を提供する。あわせて各知見から関連するGoogleスプレッドシートへ直接アクセスできるようにする\n・アーキテクチャ案(依頼文として渡し済み): progress-tracker-dashboardのdata/tasks.jsonを正本としプル型で取得(書き込み不要のためGAS新設は不要)。GitHub Actionsで定期的に取得・再帰的に平坦化してdata/knowledge-index.jsonを生成・コミットし、index.html(GitHub Pages)で検索・閲覧できるようにする\n・スプレッドシートリンクの抽出ルール(完全URL採用/「SPREADSHEET_ID: <ID>」記載からのURL再構成)、実装データ(集約元raw URL、既知リポジトリ一覧、共通の実装進捗管理シートURL)も依頼文に含めて渡した\n・他のClaude Codeセッションからは https://raw.githubusercontent.com/gurii-gabreh/Knowledge-Dashboard/main/data/knowledge-index.json を直接取得して過去の実装知見を参照できる設計とした",
+      "issues": "専用ルームでの実際の構築(GitHub Actionsワークフロー・index.html・GitHub Pages有効化)はまだ行われていない(依頼文の受け渡しのみ完了)。",
+      "manualSetup": "",
+      "note": "【作業タスク】リポジトリ(gurii-gabreh/Knowledge-Dashboard)は作成済み。専用の別ルームで構築を開始中。共有Routineの実装対象ではない。",
       "output": "",
       "parentTask": "",
       "isSubtask": false,
