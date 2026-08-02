@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ナレッジダッシュボード｜実装知見インデックス</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --border: #e0e3ec;
+    --border-strong: #c9cddb;
+    --text: #1b1e2b;
+    --text-muted: #666b80;
+    --text-faint: #9195a8;
+    --accent: #0f7a6c;
+    --accent-soft: #e2f3ef;
+    --accent-strong: #0a5a4f;
+    --warn: #a86a10;
+    --warn-soft: #fbf0dc;
+    --done: #0f7a6c;
+    --done-soft: #e2f3ef;
+    --progress: #2f6fb0;
+    --progress-soft: #e3ecf7;
+    --todo: #74788a;
+    --todo-soft: #eceef3;
+    --shadow: 0 1px 2px rgba(20, 24, 40, 0.04), 0 8px 24px -12px rgba(20, 24, 40, 0.10);
+    --radius: 10px;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14151d;
+      --surface: #1b1d28;
+      --surface-raised: #21232f;
+      --border: #2c2f3d;
+      --border-strong: #3a3d4e;
+      --text: #e7e8f0;
+      --text-muted: #9a9db0;
+      --text-faint: #6d7086;
+      --accent: #35b8a3;
+      --accent-soft: #16302c;
+      --accent-strong: #5fd0bd;
+      --warn: #e0ac4d;
+      --warn-soft: #332812;
+      --done: #35b8a3;
+      --done-soft: #16302c;
+      --progress: #6ea8e0;
+      --progress-soft: #1a2b3e;
+      --todo: #9a9db0;
+      --todo-soft: #22242f;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14151d; --surface: #1b1d28; --surface-raised: #21232f; --border: #2c2f3d; --border-strong: #3a3d4e;
+    --text: #e7e8f0; --text-muted: #9a9db0; --text-faint: #6d7086; --accent: #35b8a3; --accent-soft: #16302c;
+    --accent-strong: #5fd0bd; --warn: #e0ac4d; --warn-soft: #332812;
+    --done: #35b8a3; --done-soft: #16302c; --progress: #6ea8e0; --progress-soft: #1a2b3e; --todo: #9a9db0; --todo-soft: #22242f;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f6fa; --surface: #ffffff; --surface-raised: #ffffff; --border: #e0e3ec; --border-strong: #c9cddb;
+    --text: #1b1e2b; --text-muted: #666b80; --text-faint: #9195a8; --accent: #0f7a6c; --accent-soft: #e2f3ef;
+    --accent-strong: #0a5a4f; --warn: #a86a10; --warn-soft: #fbf0dc;
+    --done: #0f7a6c; --done-soft: #e2f3ef; --progress: #2f6fb0; --progress-soft: #e3ecf7; --todo: #74788a; --todo-soft: #eceef3;
+    --shadow: 0 1px 2px rgba(20, 24, 40, 0.04), 0 8px 24px -12px rgba(20, 24, 40, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  header.page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 30px;
+    margin: 0;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+  .cross-link {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border: 1px solid var(--border-strong);
+    padding: 7px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .cross-link:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+  .subtitle { color: var(--text-muted); font-size: 14px; margin: 8px 0 28px; max-width: 68ch; }
+  .subtitle code {
+    font-family: var(--mono);
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    word-break: break-all;
+  }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+  .stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); }
+  .stat-tile .num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 26px; font-weight: 600; color: var(--text); line-height: 1.1; }
+  .stat-tile .label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  .toolbar {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px;
+    position: sticky; top: 0; background: linear-gradient(var(--bg) 80%, transparent);
+    padding: 10px 0 12px; z-index: 5;
+  }
+  .search-box { flex: 1 1 240px; position: relative; }
+  .search-box input {
+    width: 100%; padding: 9px 12px 9px 34px; border-radius: 8px; border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--text); font-size: 14px; outline: none;
+  }
+  .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .search-box svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-faint); }
+  select {
+    padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--text); font-size: 13.5px;
+  }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .chip-row .chip-group-label { font-size: 11px; color: var(--text-faint); align-self: center; margin-right: 2px; }
+  .chip {
+    font-size: 12.5px; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--text-muted); cursor: pointer; user-select: none;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--text); }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+  .chip .count { opacity: 0.75; font-variant-numeric: tabular-nums; }
+  .chip-row.status-row { margin-bottom: 22px; }
+
+  .card-list { display: flex; flex-direction: column; gap: 8px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  .card-head { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; cursor: pointer; user-select: none; }
+  .card-head:hover { background: var(--surface-raised); }
+  .card-head .caret {
+    width: 8px; height: 8px; border-right: 2px solid var(--text-faint); border-bottom: 2px solid var(--text-faint);
+    transform: rotate(-45deg); transition: transform 0.15s; flex: none; margin-top: 6px;
+  }
+  .card.open .card-head .caret { transform: rotate(45deg); }
+  .card-head-main { flex: 1; min-width: 0; }
+  .card-title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .repo-badge {
+    font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px;
+    background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); white-space: nowrap;
+  }
+  .task-title { font-weight: 500; font-size: 14.5px; color: var(--text); }
+  .parent-hint { font-size: 12px; color: var(--text-faint); margin-top: 2px; }
+  .status-badge { font-size: 11px; padding: 2px 9px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
+  .status-done { background: var(--done-soft); color: var(--done); }
+  .status-progress { background: var(--progress-soft); color: var(--progress); }
+  .status-todo { background: var(--todo-soft); color: var(--todo); }
+  .manual-badge { font-size: 11px; padding: 2px 9px; border-radius: 999px; background: var(--warn-soft); color: var(--warn); font-weight: 600; white-space: nowrap; }
+  .card-meta { display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 6px; font-size: 12px; color: var(--text-faint); font-family: var(--mono); }
+
+  .card-body { border-top: 1px solid var(--border); padding: 4px 16px 16px 38px; display: none; }
+  .card.open .card-body { display: block; }
+  .field { margin-top: 12px; }
+  .field h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); font-weight: 600; margin: 0 0 5px; }
+  .field .val { font-size: 13.5px; white-space: pre-wrap; word-break: break-word; color: var(--text); }
+  .field.issues .val { color: var(--warn); }
+
+  .sheet-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .sheet-link {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 5px 10px; border-radius: 7px;
+    border: 1px solid var(--border-strong); background: var(--surface-raised); color: var(--accent-strong);
+    text-decoration: none; font-weight: 500;
+  }
+  .sheet-link:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+  .empty-state, .loading-state, .error-state { text-align: center; padding: 48px 16px; color: var(--text-muted); font-size: 14px; }
+  .error-state { color: var(--warn); }
+
+  footer {
+    margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border); color: var(--text-faint);
+    font-size: 12px; display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: space-between;
+  }
+  footer .note { max-width: 60ch; }
+  footer code { font-family: var(--mono); word-break: break-all; }
+
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Knowledge Dashboard</p>
+      <h1>実装知見インデックス</h1>
+    </div>
+    <a class="cross-link" href="dashboard.html">スプレッドシート一覧 →</a>
+  </header>
+  <p class="subtitle">
+    <code>progress-tracker-dashboard</code> の <code>data/tasks.json</code> を正本として、各プロジェクト（kizashi・supermarket-price-tracker・gemini-monitor・ai-research-radar 等）の実装ナレッジ（detail / issues / manualSetup など）を横断的に集約したインデックスです。
+    GitHub Actions が定期的に取得・平坦化して <code>data/knowledge-index.json</code> を生成しています。
+    他の Claude Code セッションはこの JSON を直接 WebFetch することで、新しい実装に着手する前に類似の過去知見を参照できます。
+  </p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchInput" type="text" placeholder="タスク・詳細・課題・スプレッドシートIDなどで検索…" autocomplete="off">
+    </div>
+    <select id="sortSel">
+      <option value="updated_desc">更新日が新しい順</option>
+      <option value="updated_asc">更新日が古い順</option>
+      <option value="repo_asc">リポジトリ順</option>
+    </select>
+  </div>
+
+  <div class="chip-row" id="repoChipRow"></div>
+  <div class="chip-row status-row" id="statusChipRow"></div>
+
+  <div class="card-list" id="cardList"></div>
+  <div class="loading-state" id="loadingState">読み込み中…</div>
+  <div class="empty-state" id="emptyState" style="display:none;">条件に一致する知見がありません。</div>
+  <div class="error-state" id="errorState" style="display:none;"></div>
+
+  <footer>
+    <span class="note" id="genNote"></span>
+    <span class="note">API: <code>data/knowledge-index.json</code></span>
+  </footer>
+</div>
+
+<script>
+const DATA_URL = "data/knowledge-index.json";
+
+let ALL = [];
+let META = {};
+let activeRepos = new Set();
+let activeStatuses = new Set();
+let query = "";
+let sortMode = "updated_desc";
+const openCards = new Set();
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function statusClass(status) {
+  if (status === "完了") return "status-done";
+  if (status === "対応中") return "status-progress";
+  return "status-todo";
+}
+
+function cardKey(item, idx) { return item.repo + "::" + item.task + "::" + idx; }
+
+function matches(item) {
+  if (activeRepos.size && !activeRepos.has(item.repo)) return false;
+  if (activeStatuses.size && !activeStatuses.has(item.status || "(未設定)")) return false;
+  if (!query) return true;
+  const hay = [item.repo, item.task, item.parentTask, item.detail, item.issues, item.manualSetup, item.note, item.output]
+    .filter(Boolean).join(" ").toLowerCase();
+  return hay.includes(query.toLowerCase());
+}
+
+function sortItems(list) {
+  const arr = [...list];
+  switch (sortMode) {
+    case "updated_asc": arr.sort((a, b) => (a.updated || "").localeCompare(b.updated || "")); break;
+    case "repo_asc": arr.sort((a, b) => a.repo.localeCompare(b.repo, "ja") || (b.updated || "").localeCompare(a.updated || "")); break;
+    default: arr.sort((a, b) => (b.updated || "").localeCompare(a.updated || ""));
+  }
+  return arr;
+}
+
+function renderStats() {
+  const repos = new Set(ALL.map(i => i.repo));
+  const manualCount = ALL.filter(i => i.manualSetup).length;
+  const tiles = [
+    { num: ALL.length, label: "知見エントリ数" },
+    { num: repos.size, label: "対象リポジトリ数" },
+    { num: manualCount, label: "要手動設定" },
+    { num: META.generatedAt ? fmtDate(META.generatedAt) : "—", label: "最終生成日" },
+  ];
+  document.getElementById("stats").innerHTML = tiles.map(t =>
+    `<div class="stat-tile"><div class="num">${t.num}</div><div class="label">${t.label}</div></div>`
+  ).join("");
+}
+
+function fmtDate(iso) {
+  const d = new Date(iso);
+  if (isNaN(d)) return String(iso).slice(0, 10);
+  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,"0"), day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+
+function renderChips() {
+  const repoCounts = {};
+  const statusCounts = {};
+  ALL.forEach(i => {
+    repoCounts[i.repo] = (repoCounts[i.repo] || 0) + 1;
+    const s = i.status || "(未設定)";
+    statusCounts[s] = (statusCounts[s] || 0) + 1;
+  });
+
+  const repoRow = document.getElementById("repoChipRow");
+  const repos = Object.keys(repoCounts).sort((a, b) => repoCounts[b] - repoCounts[a]);
+  repoRow.innerHTML = `<span class="chip-group-label">リポジトリ</span>` + repos.map(r =>
+    `<span class="chip${activeRepos.has(r) ? " active" : ""}" data-kind="repo" data-val="${escapeHtml(r)}">${escapeHtml(r)} <span class="count">${repoCounts[r]}</span></span>`
+  ).join("");
+
+  const statusRow = document.getElementById("statusChipRow");
+  const statusOrder = ["未着手", "対応中", "完了"];
+  const statuses = Object.keys(statusCounts).sort((a, b) => statusOrder.indexOf(a) - statusOrder.indexOf(b));
+  statusRow.innerHTML = `<span class="chip-group-label">ステータス</span>` + statuses.map(s =>
+    `<span class="chip${activeStatuses.has(s) ? " active" : ""}" data-kind="status" data-val="${escapeHtml(s)}">${escapeHtml(s)} <span class="count">${statusCounts[s]}</span></span>`
+  ).join("");
+
+  document.querySelectorAll(".chip[data-kind]").forEach(el => {
+    el.addEventListener("click", () => {
+      const set = el.dataset.kind === "repo" ? activeRepos : activeStatuses;
+      const val = el.dataset.val;
+      if (set.has(val)) set.delete(val); else set.add(val);
+      renderChips();
+      renderCards();
+    });
+  });
+}
+
+function renderCards() {
+  const filtered = sortItems(ALL.map((item, idx) => ({ item, idx })).filter(({ item }) => matches(item)));
+  const list = document.getElementById("cardList");
+  const emptyState = document.getElementById("emptyState");
+
+  if (!filtered.length) {
+    list.innerHTML = "";
+    emptyState.style.display = "block";
+    return;
+  }
+  emptyState.style.display = "none";
+
+  list.innerHTML = filtered.map(({ item, idx }) => {
+    const key = cardKey(item, idx);
+    const open = openCards.has(key);
+    const status = item.status || "(未設定)";
+    const sheetLinks = (item.spreadsheetUrls || []).map((url, i) =>
+      `<a class="sheet-link" href="${escapeHtml(url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📊 スプレッドシート${item.spreadsheetUrls.length > 1 ? " " + (i + 1) : ""}</a>`
+    ).join("");
+
+    const fields = [
+      ["detail", "実装ナレッジ"],
+      ["issues", "issues"],
+      ["manualSetup", "manualSetup"],
+      ["note", "備考"],
+      ["output", "成果物 / output"],
+    ].filter(([k]) => item[k]).map(([k, label]) =>
+      `<div class="field${k === "issues" ? " issues" : ""}"><h4>${label}</h4><div class="val">${escapeHtml(item[k])}</div></div>`
+    ).join("");
+
+    return `<div class="card${open ? " open" : ""}" data-key="${escapeHtml(key)}">
+      <div class="card-head">
+        <span class="caret"></span>
+        <div class="card-head-main">
+          <div class="card-title-row">
+            <span class="repo-badge">${escapeHtml(item.repo)}</span>
+            <span class="status-badge ${statusClass(item.status)}">${escapeHtml(status)}</span>
+            ${item.manualSetup ? `<span class="manual-badge">⚠ 手動設定</span>` : ""}
+          </div>
+          <div class="task-title">${escapeHtml(item.task)}</div>
+          ${item.parentTask ? `<div class="parent-hint">親タスク: ${escapeHtml(item.parentTask)}</div>` : ""}
+          <div class="card-meta">
+            ${item.updated ? `<span>更新: ${escapeHtml(item.updated)}</span>` : ""}
+            ${item.priority ? `<span>優先度: ${escapeHtml(item.priority)}</span>` : ""}
+          </div>
+          ${sheetLinks ? `<div class="sheet-links">${sheetLinks}</div>` : ""}
+        </div>
+      </div>
+      <div class="card-body">${fields || `<div class="field"><div class="val" style="color:var(--text-faint)">記録された詳細はありません。</div></div>`}</div>
+    </div>`;
+  }).join("");
+
+  list.querySelectorAll(".card-head").forEach(el => {
+    el.addEventListener("click", () => {
+      const card = el.closest(".card");
+      const key = card.dataset.key;
+      if (openCards.has(key)) openCards.delete(key); else openCards.add(key);
+      card.classList.toggle("open");
+    });
+  });
+}
+
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  query = e.target.value;
+  renderCards();
+});
+document.getElementById("sortSel").addEventListener("change", (e) => {
+  sortMode = e.target.value;
+  renderCards();
+});
+
+async function load() {
+  try {
+    const res = await fetch(DATA_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    ALL = data.entries || [];
+    META = data;
+    document.getElementById("loadingState").style.display = "none";
+    document.getElementById("genNote").textContent =
+      `最終生成: ${META.generatedAt ? fmtDate(META.generatedAt) : "—"}（GitHub Actions が ${META.source || "progress-tracker-dashboard"} から自動生成）`;
+    renderStats();
+    renderChips();
+    renderCards();
+  } catch (err) {
+    document.getElementById("loadingState").style.display = "none";
+    const es = document.getElementById("errorState");
+    es.style.display = "block";
+    es.textContent = `データの読み込みに失敗しました（${err.message}）。data/knowledge-index.json がまだ生成されていない可能性があります。`;
+  }
+}
+
+load();
+</script>
+</body>
+</html>
