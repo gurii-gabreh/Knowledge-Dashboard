@@ -1,0 +1,576 @@
+{
+  "generatedAt": "2026-08-02T13:08:23.542Z",
+  "source": "https://raw.githubusercontent.com/gurii-gabreh/progress-tracker-dashboard/main/data/tasks.json",
+  "sheetUrl": "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit",
+  "knownRepos": [
+    "kizashi",
+    "supermarket-price-tracker",
+    "gemini-monitor",
+    "progress-tracker-dashboard",
+    "ai-research-radar",
+    "usage-tracker",
+    "Knowledge-Dashboard"
+  ],
+  "entryCount": 31,
+  "entries": [
+    {
+      "repo": "progress-tracker-dashboard",
+      "task": "初期セットアップ",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-07-26",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "",
+      "output": "",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "progress-tracker-dashboard",
+      "task": "スプレッドシート作成",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-07-26",
+      "detail": "・Google Driveに「実装進捗管理シート」を作成(CSVアップロードでGoogle Sheetsに変換)\n・列構成: Repo, Task, 優先度, ステータス, 最終更新日時, 備考\n・Google DriveコネクタにはファイルのUPDATE手段が無いため、既存シートへの書き込みはできない前提で設計\n・シートは人がタスクを追加する「入力専用」とし、ステータスの正本はリポジトリ内のdata/tasks.jsonに置くことにした",
+      "issues": "",
+      "manualSetup": "",
+      "note": "",
+      "output": "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit",
+      "parentTask": "初期セットアップ",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "progress-tracker-dashboard",
+      "task": "ダッシュボード雛形作成",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-07-26",
+      "detail": "・dashboard.htmlをリポジトリ内に作成し、Claude Artifactとして公開\n・当初はリポジトリ別テーブル表示だったが、Slackのフィードのように「一行1タスク」で読める形が良いとのフィードバックを受け、フラットなフィード表示(アイコン+リポジトリ名+タスク文+ステータスチップ)に変更\n・親タスク/子タスクの階層表示と、タスクごとの実装詳細(ナレッジ)をクリックで展開できる形に発展させた",
+      "issues": "",
+      "manualSetup": "",
+      "note": "",
+      "output": "https://claude.ai/code/artifact/b395634a-ff68-44cb-a667-92c53448c992",
+      "parentTask": "初期セットアップ",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "progress-tracker-dashboard",
+      "task": "Routine設定",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-07-26",
+      "detail": "・平日9/12/15/18時(JST)に自動実行するRoutineを作成\n・新規セッションを都度立ち上げる方式だとconnectors(Google Drive等)の権限委譲ができなかったため、このセッション自体を定期的に再開する自己バインド方式(persist_session)に変更して解決\n・Routineの設計: (1)スプレッドシートの新規タスクをtasks.jsonへ取り込み (2)Repo欄が既知のリポジトリ名ならコード実装(ブランチ+PR)、それ以外なら調査・資料作成タスクとして処理 (3)問題が起きたタスクはスキップして次へ進む",
+      "issues": "",
+      "manualSetup": "",
+      "note": "",
+      "output": "",
+      "parentTask": "初期セットアップ",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "progress-tracker-dashboard",
+      "task": "タスクごとの簡易チャットスレッド機能(コメント)",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-08-01",
+      "detail": "・ダッシュボード側(dashboard.html)は既に、各タスクにcomments([{author:\"user\"|\"routine\", text, at}])フィールドを持たせ、クリックで開くナレッジパネル内にチャット風のスレッドUIとテキスト入力欄を表示する形で実装済みだった(他セッションによる作業)\n・GAS本体側の対応(1): doPost内にaddCommentアクションを追加。リクエスト形式は{ token, addComment: [{ repo, task, text, author, at }] }(author: \"user\"|\"routine\"、at: \"YYYY-MM-DD HH:mm\")\n・スプレッドシートに「コメント」タブ(列: Repo, Task, 発言者, 本文, 日時)が無ければ作成し、受け取った内容を1行ずつ追記。既存のnewTasks/markUrgentと同じdoPost関数内に追加し、トークン認証もそのまま流用\n・GAS本体側の対応(2): listTasks()の戻り値にcomments配列({repo, task, author, text, at}の平坦な配列)を追加。dashboard.html側の?action=list取得時にmergeCommentsIntoViewがdata.commentsを読んでrepo+taskで該当タスクを突き合わせ、各ノードのcomments配列にマージする実装に対応するため\n・GAS側のソースはGitHubとは自動連携していない(Apps Script APIやclaspへのアクセス手段が無いため)ことがgemini-monitorのケースで判明済みだったので、今回は最初からgas/Code.gsとしてリポジトリにソースを保存し、手動デプロイが必要な旨をmanualSetupに明記する形を取った\n・Routineプロンプトにも、実行のたびに「コメント」タブの新規author:\"user\"コメントを確認し、manualSetup解消や再オープン、author:\"routine\"での返信を行うロジックを追加(2026-07-30、update_triggerで反映済み)\n・処理済みコメントの二重処理を避けるため、対応したauthor:\"routine\"の返信コメントのat(日時)がユーザーコメントより後になっていることをもって「対応済み」とみなす設計とした(専用の既読管理列は追加していない)",
+      "issues": "Routine実行環境からscript.google.comへの通信がネットワークポリシーで遮断されているため、Routine自身によるaddComment呼び出しの動作確認はできていない(ユーザーのブラウザからの送信・反映は確認済み)。",
+      "manualSetup": "",
+      "note": "2026-08-01、本人よりgas/Code.gsの再デプロイ完了の報告あり。ただしこのRoutine実行環境はscript.google.comへの通信が引き続きネットワークポリシーでブロックされているため(progress-tracker-dashboardの「GAS Webアプリへの書き込みがこの環境から到達不可」タスク参照)、Routine側からaddComment/completeTasksの実際の動作確認はまだできていない。ダッシュボード(ユーザーのブラウザ)からのコメント送信・?action=listでの動作確認をお願いしたい。また、manualSetupにあった`compactPendingSheet`の手動実行(依頼タスクタブでappendRowが1000行以降に飛んでいた不具合の修復)を実施済みかも未確認のため、あわせて確認をお願いしたい。",
+      "output": "gas/Code.gs",
+      "parentTask": "初期セットアップ",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "progress-tracker-dashboard",
+      "task": "依頼タスク⇄完了タブの自動移動(completeTasksアクション)",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-08-01",
+      "detail": "・README「引き継ぎ事項」の4番目('依頼タスクタブ⇄完了タブ間の移動が実際には行われていない')に対応\n・従来はGAS側にsyncFromGithub()という、data/tasks.jsonをGitHubから取得して完了タブへ反映する関数はあったが、これを起動する時間主導トリガーが未設定で実質死んでいた(2026-07-30時点で完了タブが列見出しのみで空だったことから判明)\n・GAS側に独自トリガーを追加する方式は運用が複雑になるため、既存のnewTasks/markUrgent/addCommentと同じHTTP POSTチャネルにcompleteTasksアクションを追加する方式に変更\n・リクエスト形式: { token, completeTasks: [{ repo, task, completedDate, note, detail, output }] }\n・doPost内でpendingSheet(依頼タスクタブ)からrepo+task一致の行を検索し、優先度の値を引き継いでから該当行を削除、doneSheet(完了タブ)へRepo・Task・優先度・完了日・備考・実装ナレッジ・成果物の7列で追記(既に同じrepo+taskの行があれば上書き)\n・Routineプロンプトにも、(a) タスクをstatus:完了にする際は必ずcompleteTasksを呼ぶルールと、(b) 毎回の実行でdata/tasks.json上status:完了だが完了タブに未反映のタスクが無いか?action=listのdone配列と突き合わせて確認し、あれば埋め合わせで呼ぶルールを追加(2026-07-30、update_triggerで反映済み)\n・旧来のsyncFromGithub()関数はgas/Code.gsに残したまま(将来的な手動実行の可能性を考慮し削除しなかった。後にこの関数自体がプル型同期の中核として復活することになる)",
+      "issues": "RoutineからのcompleteTasks呼び出し自体は未検証(ネットワークポリシーの制約のため)。実際の移動は現在プル型同期(syncFromGithub)経由で行われている。また、依頼タスクタブとtasks.json間でタスク名の全角/半角・記号(波ダッシュ〜と半角チルダ~など)の表記が食い違うとrepo+task照合に失敗し行が残り続ける不具合が過去にあった(2026-08-01、正規化処理を追加して修正)。",
+      "manualSetup": "",
+      "note": "上の「タスクごとの簡易チャットスレッド機能(コメント)」タスクと同じgas/Code.gsの再デプロイで2026-08-01に有効化された(本人報告ベース)。ただし、このRoutine実行環境からscript.google.comへの書き込みが別問題(ネットワークポリシーによる遮断)でブロックされたままのため、RoutineからcompleteTasksを呼んでの動作確認はまだできていない。gemini-monitorの行が依頼タスクタブに残ったままなのはこれが理由。",
+      "output": "gas/Code.gs",
+      "parentTask": "初期セットアップ",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "progress-tracker-dashboard",
+      "task": "GAS Webアプリへの書き込みがこの環境から到達不可(script.google.comへの通信がブロックされている)への対応",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-08-01",
+      "detail": "・従来、Routineがタスクを完了させても、依頼タスクタブ→完了タブの移動(completeTasksアクション)やコメント返信(addCommentアクション)はRoutine実行環境からscript.google.comへHTTPでPOSTすることで行っていた\n・このRoutine実行環境(env_01DvV1ut5eXRsEYqLMC7hb1j)のアウトバウンド通信はプロキシのネットワークポリシーでscript.google.comへのアクセスが403で拒否されており(curl・WebFetch双方で確認)、これらのPOSTは常に失敗していた\n・claude.ai/codeの環境設定でネットワークアクセスを「Custom」にしてscript.google.comを許可リストへ追加する対応を試みたが、設定ダイアログが開けないなどの理由で完了できなかった\n・そこで書き込みの向きを逆転させる方針に転換: gas/Code.gsに既にあったsyncFromGithub()関数(data/tasks.jsonをGitHubのraw.githubusercontent.com経由で取得し、完了タスクを依頼タスクタブから完了タブへ移動する関数。これを起動する時間主導トリガーが一度も設定されておらず実質死んでいた)を拡張\n・拡張内容: 完了タスクの移動に加えて、各タスクのcomments配列に含まれるauthor:\"routine\"のコメントのうちコメントタブにまだ無いものだけを追記(repo+task+author+text+atの完全一致で重複判定)\n・この関数はGASの時間主導トリガーから呼ばれ、Google側のインフラが自発的にGitHubへ取りに行く形になるため、Routine実行環境のネットワーク制約を完全に迂回できる\n・Routine側は引き続きcompleteTasks/addCommentのPOSTを試みるが、失敗してもdata/tasks.jsonへの正しい書き込み・コミット・pushさえしておけば、次回のトリガー実行で自動的に追いつく設計にした\n・追加(2026-08-01): ユーザー要望を受け、syncFromGithubをトリガー任せにせず即時実行できるようdoPostに{token, syncNow:true}アクションを追加。呼ばれるとsyncFromGithub()を同期実行し、結果件数をJSONで返す。dashboard.htmlに「⏩ 今すぐ同期」ボタンを追加\n・追加(2026-08-01 続報): repo+taskの完全一致判定が、全角/半角や波ダッシュ(〜)と半角チルダ(~)などの表記ゆれで失敗し、依頼タスクタブの行が完了後も削除されずに残る不具合が発覚。findRow/removeRowの比較にNFKC正規化+チルダ表記統一を追加して解消。あわせてsyncFromGithubに、完了していないタスクについても最新のステータス・備考(いつ処理したかの履歴)を依頼タスクタブへ反映する処理を追加した\n・追加(2026-08-01 3回目): 依頼タスクタブの行が完了後も削除されない不具合(タスク名の表記ゆれによる照合失敗)と、未完了タスクの備考欄がいつまでも空欄で処理履歴が分からない問題を修正。findRow/removeRowにNFKC正規化+チルダ表記統一を追加し、syncFromGithubに「まだ完了していないタスクはステータスと備考(履歴として改行追記)を依頼タスクタブへ反映する」処理を追加した。",
+      "issues": "根本原因(Routine実行環境のネットワークポリシーによるscript.google.comの遮断)自体は未解決のまま。環境設定でCustomネットワークアクセスへの変更を試みたが、設定ダイアログが開けず完了できなかった。実害はGAS側からのプル型同期で解消したが、Routineが直接POSTできない制約自体は残っている。",
+      "manualSetup": "「実装進捗管理シート」に紐付いたApps Scriptプロジェクトのエディタで、最新の`gas/Code.gs`を貼り付けて保存してください。今回の版はfindRow/removeRowの照合ロジック(タスク名の全角/半角・波ダッシュ表記ゆれの正規化)と、syncFromGithubの未完了タスク向け同期(ステータス・備考欄の履歴追記)を追加しており、これらはdoPost(newTasks/markUrgent/completeTasks/syncNowアクション)からも呼ばれる共通関数のため、保存だけでなく デプロイ→デプロイを管理→既存のウェブアプリデプロイの鉛筆アイコン→バージョンを「新しいバージョン」にして「デプロイ」を押す、という再デプロイが必要です(保存だけではWebアプリ経由の呼び出し(ダッシュボードの各ボタン)には反映されません)。再デプロイ後、まだの場合はエディタ左側の「トリガー」アイコン(時計マーク)→右下の「トリガーを追加」から、実行する関数に`syncFromGithub`、イベントのソースを「時間主導型」、時間の間隔の種類を「時間ベースのタイマー」、間隔を例えば「1時間おき」に設定して保存してください。",
+      "note": "根本原因(Routine実行環境のネットワークポリシー)自体は未解決で、環境設定の変更を試みたが完了できなかった(設定ダイアログが開かない、等)。そこで方針転換し、GAS側からGitHubへ「取りに行く」プル型の同期に切り替えることで、Routine側からscript.google.comへ到達できなくても実害が出ないようにした。",
+      "output": "gas/Code.gs",
+      "parentTask": "初期セットアップ",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "progress-tracker-dashboard",
+      "task": "週次残タスクチェック",
+      "status": "対応中",
+      "priority": "中",
+      "category": "manual",
+      "updated": "2026-08-02",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】毎週月曜、専用のRoutine(週次残タスクチェックトリガー)が実装進捗管理シートの依頼タスクタブ全体(全リポジトリ)を棚卸しし、滞留タスクが無いか確認する。共有Routineの実装対象ではない。",
+      "output": "",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "都知事杯ハッカソン2026 企画・要件整理",
+      "status": "完了",
+      "priority": "-",
+      "category": "manual",
+      "updated": "2026-07-18",
+      "detail": "・開発動機: 開発者の親戚が土砂災害に遭い消息不明になった実体験に基づき、「土砂災害現場で待機する家族・関係者」向けの現場情報共有アプリとして企画\n・アプリコンセプト: 危険エリア可視化、二次災害アラート、事前問診フォーム(重複聞き取り解消)、報告・記録のデジタル共有、前兆現象共有モードの5つを核心機能として設計\n・絶対にやらないこと(人命に関わるため明確に除外): 生存確率・救助優先順位の提示、重機の自動手配、指揮官不要の意思決定代替、独自の線状降水帯予測アルゴリズム開発\n・使用予定オープンデータを選定し一部は実データで検証済み: 国土数値情報「土砂災害警戒区域データ」東京都版(GeoJSON形式提供を確認)、気象庁防災情報XML(無料・登録不要を確認)、気象庁「線状降水帯予測マップ」、国交省・首相官邸の前兆現象チェックリスト\n・企画書(都知事杯ハッカソン_企画整理.md)・Claude Code起動プロンプト(claude-code-起動プロンプト.md)を作成したが、その後gurii-gabreh/Kizashiリポジトリからは削除されている(内容はgit履歴のコミットb4ffa9eに残存)",
+      "issues": "気象庁「土砂キキクル」の5段階詳細危険度データを無料で取得できる個人向けAPIが本当に存在しないか、東京都建設局サイト(d-keikai.metro.tokyo.lg.jp)がiframe埋め込み可能か(X-Frame-Options制限の有無)は、企画整理の時点では確認できておらず、技術検証フェーズへ持ち越しとなった。",
+      "manualSetup": "",
+      "note": "【作業タスク】ユーザー自身が別のClaude Codeルームで進めていた作業。都知事杯オープンデータ・ハッカソン2026(東京都主催、エントリー締切2026-07-27)への提出を目指す「結(ゆい)土砂災害アプリ」(旧称: きざし)の企画フェーズ。",
+      "output": "企画書・起動プロンプトはgurii-gabreh/Kizashiリポジトリのgit履歴(コミットb4ffa9e)にのみ残存(現在は削除済み)",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "技術検証フェーズ(実データでの動作確認)",
+      "status": "未着手",
+      "priority": "高",
+      "category": "manual",
+      "updated": "2026-08-01",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】ユーザー自身が対応する技術検証タスク群。企画整理時点(2026-07-18)で「未検証・要確認事項」として洗い出されたもの。",
+      "output": "",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "国土数値情報の東京都「土砂災害警戒区域データ」(A33-20_13_GML.zip, 20.9MB)を実際にダウンロードしGeoJSON化、UIプロトタイプのサンプルデータと差し替えて表示検証(座標系JGD2011→WGS84変換要否、ファイルサイズによる表示速度への影響、区部絞り込みの要否を含む)",
+      "status": "未着手",
+      "priority": "高",
+      "category": "manual",
+      "updated": "-",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】",
+      "output": "",
+      "parentTask": "技術検証フェーズ(実データでの動作確認)",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "気象庁防災情報XMLの実地取得テスト(Cloudflare Workersから定期取得できるか、都・区市町村単位の警報有無を抽出できるか)",
+      "status": "未着手",
+      "priority": "高",
+      "category": "manual",
+      "updated": "-",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】",
+      "output": "",
+      "parentTask": "技術検証フェーズ(実データでの動作確認)",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "東京都建設局サイト(d-keikai.metro.tokyo.lg.jp)のiframe埋め込み表示可否確認(X-Frame-Options等の制限有無)。できない場合はリンク提示に切り替え",
+      "status": "未着手",
+      "priority": "高",
+      "category": "manual",
+      "updated": "-",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】",
+      "output": "",
+      "parentTask": "技術検証フェーズ(実データでの動作確認)",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "気象庁「土砂キキクル」5段階詳細危険度の生データを無料取得する手段の有無確認(無ければ公式ページ埋め込みで代替)",
+      "status": "未着手",
+      "priority": "中",
+      "category": "manual",
+      "updated": "-",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】",
+      "output": "",
+      "parentTask": "技術検証フェーズ(実データでの動作確認)",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "Cloudflare D1のセットアップ確認(ハッカソン特典での利用可否、無料枠の読み書き回数・容量上限)",
+      "status": "未着手",
+      "priority": "中",
+      "category": "manual",
+      "updated": "-",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】",
+      "output": "",
+      "parentTask": "技術検証フェーズ(実データでの動作確認)",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "LINE Messaging APIの無料枠確認(現場ルームからの通知配信数が無料枠内に収まるか)",
+      "status": "未着手",
+      "priority": "中",
+      "category": "manual",
+      "updated": "-",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】",
+      "output": "",
+      "parentTask": "技術検証フェーズ(実データでの動作確認)",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "国土地理院タイルの利用規約確認(商用・イベント利用時の出典表示義務等)",
+      "status": "未着手",
+      "priority": "低",
+      "category": "manual",
+      "updated": "-",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】",
+      "output": "",
+      "parentTask": "技術検証フェーズ(実データでの動作確認)",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "kizashi",
+      "task": "前兆現象チェックリストの正式引用元確定(首相官邸・国交省砂防部のどちらを一次情報として引用するか)",
+      "status": "未着手",
+      "priority": "低",
+      "category": "manual",
+      "updated": "-",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "【作業タスク】",
+      "output": "",
+      "parentTask": "技術検証フェーズ(実データでの動作確認)",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "supermarket-price-tracker",
+      "task": "きちんと処理が動いているか、スプレッドシート内容と履歴を確認して",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-08-02",
+      "detail": "・まずgitログを確認したところ、直前の会話で実装した3件の修正(重複レコード防止/savePricesToSheetの日付単位dedup、チラシ更新の誤検知修正/leafletID集合比較への変更、GEMINI_API_KEYのScript Properties化)がブランチ`claude/duplicate-records-price-retrieval-e2waki`にコミットされたまま、PRが1件も作成されていなかった(GitHub上のPR一覧が空)。PR #1として作成した\n・あわせて判明: このリポジトリでCode.gs(GASソース)がバージョン管理されたのは今回の3コミットが初めてで、それ以前は本番のApps Scriptエディタ上でのみ管理されていた(mainブランチにはCode.gs自体が存在しない)\n・本番スプレッドシート(SPREADSHEET_ID: 1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY)をGoogle Driveで直接読み、実データを確認した:\n  - 詳細ログ付きの収集実行記録(収集日時/スーパー名/結果/取得品目数/備考/詳細ログの列を持つタブ)の最終行は2026-07-26 10:00:11で、以降(7/27〜8/1)の記録が1件も無い\n  - 一方「収集待ちリスト」タブ(現行のautoCollect()が書き込む先)には2026-08-01 10:36:51の新しいエントリがあり、日次トリガー自体(平日10時JST)は動作している\n  - 現行のautoCollect()を読むと、チラシ更新チェックと「収集待ちリスト」への登録のみを行い、実際のスクレイピング・Gemini解析は「Pythonスクリプトが担当」で「GASからPythonを直接起動できない」とコメントされている。このPythonスクリプトの実体・稼働状況はこのセッションからは確認できなかった\n  - 「平均価格」タブの「集計日」列はcalcAveragePrices()実行時点の当日日付をその都度書き込むだけで、実際に新しい価格データが収集された日付ではない。そのため一見「8/1時点で集計されている」ように見えても、元の価格データ自体が更新されているとは限らない\n  - 「サマリー」タブに現行コードが書き込むはずの「重複除外数」列が無く、収集日時・対象スーパー数・収集商品数の3列のみだった。これは重複防止の修正がまだ本番にデプロイされていないことと整合する\n・以上を総合すると、「一見動いているように見えるが、実際には新しい価格データが直近1週間ほど収集できていない可能性が高い」というのが現状の結論",
+      "issues": "・収集実行ログ・詳細な価格収集記録が2026-07-26を最後に止まっている(直近1週間、実際の新規価格データが収集できていない可能性がある)\n・現行のautoCollect()は「収集待ちリスト」を作るところまでで、それを消費して実際に価格を収集するはずの外部処理(コード内コメントで言及されている「Pythonスクリプト」)の所在・稼働有無をこのセッションからは確認できなかった。これが存在しない/停止している場合、現在の設計では収集フローが完結しない\n・重複防止・チラシ誤検知修正・APIキー移動の3件はPR化しただけで、mainへのマージ・GASへの再デプロイはまだ行われていない\n・本番スプレッドシートの「価格履歴」タブは非常に大きく(10万文字超)、このセッションでは全件を読み切れていないため、直近1週間のデータが本当に0件なのか(それとも一部だけ収集できているのか)は未確定",
+      "manualSetup": "1) PR #1 (https://github.com/gurii-gabreh/supermarket-price-tracker/pull/1) をレビューしてmainへマージし、Apps Scriptエディタで最新のCode.gsを貼り付けて保存、ウェブアプリとして再デプロイしてください。Script PropertiesにGEMINI_API_KEYが未設定の場合はあわせて設定してください。\n2) 「収集待ちリスト」を消費して実際にトクバイのチラシを収集するはずの外部処理(Code.gs内コメントに『Pythonスクリプトが担当』とある)が今も存在し、稼働しているか確認してください。心当たりが無い場合、この仕組み自体が未完成か失われている可能性があります。\n3) 本番の「価格履歴」タブを直接開き、2026-07-27以降のデータが実際に増えているかどうかを確認してください(このセッションからは容量が大きく全件確認できませんでした)。",
+      "note": "調査の結果、直近の修正3件が未マージ・未デプロイのまま放置されていたことと、本番の自動収集が実質1週間止まっている可能性が高いことが判明した。PR #1を作成したが、マージ・GAS再デプロイ・外部処理の稼働確認は人の対応待ち。",
+      "output": "https://github.com/gurii-gabreh/supermarket-price-tracker/pull/1",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY/edit",
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "gemini-monitor",
+      "task": "現状、午前0〜1時までしか測定していないが、それを1日目午前0〜11、次の日は午後12〜23時のように修正して",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-07-30",
+      "detail": "",
+      "issues": "日替わりの時間帯フィルタ(午前0〜11時/午後12〜23時)が実測ログ上でも正しく機能しているか、まだ検証が済んでいない。",
+      "manualSetup": "",
+      "note": "コード実装・GAS手動デプロイともに完了。次回以降のトリガー実行から日替わりの時間帯外はスキップされる想定(実測はまだ未確認)。なお2026-08-01時点でスプレッドシートの依頼タスクタブを確認したところ、この行はまだ「未着手」のまま残っており完了タブにも移動していない。原因はcompleteTasksが呼べていないため(下記progress-tracker-dashboardの「GAS Webアプリへの書き込みがこの環境から到達不可」を参照)。人が直接スプレッドシートの該当行を編集・削除しても支障はない。2026-08-01、本人がダッシュボードからこのタスクにコメント送信をテストし、コメントタブへの反映(addComment)が正常に動作することを確認した(completeTasksはまだ未検証)。",
+      "output": "",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "gemini-monitor",
+      "task": "コード実装(GitHub側)",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-07-29",
+      "detail": "・調査の結果、フロント(index.html)には「測定時間帯」の手動トグル(0〜12時/12〜24時)がありsaveSettingsでtime_slotパラメータを送っていたが、GAS側(gas/Code.gs)のgetSettings/saveSettings/runMeasurementのどれもtime_slotを参照しておらず、実際の測定は常に24時間フルで行われていた(=無料枠節約を謳ったUIが実際には機能していなかった)\n・依頼は「1日目は午前0〜11時、次の日は午後12〜23時」という日替わり交互パターンだったため、静的な手動切り替えではなく自動切り替えとして実装\n・gas/Code.gsにgetMeasurementWindow(date)を追加し、JST基準の通し日数(エポックからの経過日数)の偶奇で「午前(0〜11時)」「午後(12〜23時)」を判定\n・runMeasurement()の先頭でisWithinMeasurementWindow()により時間帯外なら即returnしてAPI呼び出し自体をスキップ\n・時間トリガー(everyHours)自体は引き続き毎時発火する設計のままとし(トリガー削除・再作成のコストを避けるため)、実行のたびに時間帯判定でフィルタする方式にした\n・フロント側は実挙動と乖離していた手動トグルUIを撤去し、同じ日替わりロジックをJSでも計算して「本日の測定時間帯」を表示するだけの読み取り専用表示に変更、saveSettingsからtime_slotパラメータの送信も削除",
+      "issues": "GAS環境固有API(SpreadsheetApp等)に依存するため実機での動作確認ができておらず、node --checkによる構文チェックのみ実施(検証は次のデプロイ後のログ確認待ち)。",
+      "manualSetup": "",
+      "note": "PR: https://github.com/gurii-gabreh/gemini-monitor/pull/1(2026-07-30にmain へマージ済み)",
+      "output": "https://github.com/gurii-gabreh/gemini-monitor/pull/1",
+      "parentTask": "現状、午前0〜1時までしか測定していないが、それを1日目午前0〜11、次の日は午後12〜23時のように修正して",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "gemini-monitor",
+      "task": "GAS(スプレッドシート紐付き)への手動デプロイ",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-07-30",
+      "detail": "・計測用スプレッドシート「Gemini API通信可能時間調査アプリ」の生ログを確認したところ、2026-06-17の稼働開始から2026-07-30時点まで、jst_hourが0〜23の全時間帯で記録が存在しており、時間帯フィルタが一度も有効になっていないことを確認(=約6週間、無料枠節約の意図に反して24時間フル稼働し続けていた)\n・原因: GitHub Pagesが配信するindex.html(フロント)とは異なり、実際の測定判定を行うgas/Code.gsはスプレッドシートに紐付いたGoogle Apps Scriptプロジェクト側にあり、GitHubへのpush/マージとは一切自動連携していなかったため\n・手順(本人が実施): (1) 対象スプレッドシートを開く→拡張機能→Apps Script (2) gas/Code.gsのmain最新内容(getMeasurementWindow/isWithinMeasurementWindow追加版)をエディタに貼り付けて保存 (3) デプロイ→デプロイを管理→既存のウェブアプリデプロイを「新しいバージョン」で更新\n・2026-07-30時点で本人からデプロイ完了の報告あり",
+      "issues": "実際に日替わりで時間帯外の測定がスキップされているかは、計測ログのjst_hour列での再確認がまだ済んでいない(次回検証待ち)。",
+      "manualSetup": "",
+      "note": "本人により手動デプロイ完了を確認(チャットでの報告ベース)。",
+      "output": "",
+      "parentTask": "現状、午前0〜1時までしか測定していないが、それを1日目午前0〜11、次の日は午後12〜23時のように修正して",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "ai-research-radar",
+      "task": "Gemini調査実行",
+      "status": "対応中",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-08-05",
+      "detail": "",
+      "issues": "",
+      "manualSetup": "",
+      "note": "GitHub Pages・レート制限対応・繰り返し調査・混雑時間帯最適化・Claudeフォールバックの各機能はコード側は完了。Claude調査ルーム(専用セッション)の作成・依頼文の貼り付けはユーザー側の対応待ち。",
+      "output": "",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "ai-research-radar",
+      "task": "GitHub Pagesデプロイの修正",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-08-02",
+      "detail": "・過去2回のPagesデプロイworkflowがいずれも失敗していたことをGitHub Actionsのログから発見(\"Get Pages site failed... Not Found\")\n・原因はリポジトリ側でGitHub Pages自体が一度も有効化されていなかったこと\n・deploy-pages.ymlのactions/configure-pages@v5にenablement: trueを追加し、既存のpages: write権限を使ってリポジトリ設定を手動で触らずに自動有効化できるようにした\n・修正後のpushでデプロイが成功することを確認済み",
+      "issues": "",
+      "manualSetup": "",
+      "note": "",
+      "output": "https://gurii-gabreh.github.io/ai-research-radar/",
+      "parentTask": "Gemini調査実行",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "ai-research-radar",
+      "task": "GEMINI_MODELの更新(gemini-2.5-flash→gemini-3.5-flash)",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-08-02",
+      "detail": "・依頼タスク実行時にGemini APIから404(models/gemini-2.5-flashは新規ユーザー向けに提供終了)が返るようになったため、gemini-3.5-flashへ切り替えた\n・doGet/doPostは変更していないため、Apps Scriptエディタでの保存のみで反映され再デプロイは不要",
+      "issues": "モデルの正式なリクエスト数上限(RPM/RPD)がgemini-2.5-flashと比べてどうかは、公式ドキュメントで確認できておらず未検証。",
+      "manualSetup": "",
+      "note": "",
+      "output": "gas/Code.gs",
+      "parentTask": "Gemini調査実行",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "ai-research-radar",
+      "task": "レート制限(429)の検知・可視化・自動リトライ",
+      "status": "完了",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-08-02",
+      "detail": "・従来は429も他のエラーと同じ扱いで「スキップ」になり、備考も生のJSONエラーが入るだけだった\n・researchWithGemini_で429を専用に検知しisRateLimitフラグを付与、collectAIResearch側ではステータスを変更せず(未着手のまま)備考に「⚠ レート制限/利用上限に達したため今回は見送り、次回の自動実行時に再試行します」と明記するようにした\n・ステータスを維持することで翌日の日次トリガーで自動的に再試行される\n・同一実行内で他のキーワードを続けて試しても同じ結果になる可能性が高いため、レート制限を検知した時点でその回の処理を打ち切る(break)",
+      "issues": "",
+      "manualSetup": "",
+      "note": "",
+      "output": "gas/Code.gs",
+      "parentTask": "Gemini調査実行",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "ai-research-radar",
+      "task": "繰り返し調査マーカー(【毎日】【N回】)の実装",
+      "status": "完了",
+      "priority": "中",
+      "category": "",
+      "updated": "2026-08-02",
+      "detail": "・依頼タスクの備考欄先頭に【毎日】または【N回】(例: 【3回】)と書くと、1回で完了にせず繰り返し調査できるようにした\n・parseRepeatConfig_で備考から設定と現在の進捗(N/N回実施)を解釈し、repeatMarkerText_で書き戻し時のマーカー文字列を再構成する\n・レート制限やエラーで処理が中断した場合もマーカー・進捗を保持し、単発扱いに戻ってしまわないようにしている\n・READMEに書き方と記入例を追記した",
+      "issues": "",
+      "manualSetup": "",
+      "note": "",
+      "output": "gas/Code.gs",
+      "parentTask": "Gemini調査実行",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "ai-research-radar",
+      "task": "Gemini混雑時間帯の自動最適化(gemini-monitor連携)",
+      "status": "完了",
+      "priority": "中",
+      "category": "",
+      "updated": "2026-08-01",
+      "detail": "・gemini-monitor(Gemini API通信可能時間調査アプリ)が別スプレッドシートで計測している時間帯別成功率ログを、SpreadsheetApp.openByIdで直接読みに行くcomputeBestHour_を追加\n・GEMINI_MODELの成功率が最も高い時間帯(サンプル数5件未満は除外)を集計し、日次トリガーの実行時刻を自動で付け替えるrescheduleToLeastCongestedHourを実装\n・createWeeklyRescheduleTriggerで毎週日曜3時に自動見直しが走るようにできる。混雑データが読めない場合は現在のトリガー時刻を維持する安全側の設計",
+      "issues": "",
+      "manualSetup": "",
+      "note": "",
+      "output": "gas/Code.gs",
+      "parentTask": "Gemini調査実行",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "ai-research-radar",
+      "task": "Geminiレート制限時のClaude調査フォールバック(プル型同期)",
+      "status": "対応中",
+      "priority": "高",
+      "category": "",
+      "updated": "2026-08-05",
+      "detail": "・専用のClaude調査ルームが、依頼タスクタブで備考に「レート制限」の印が付いた行を見つけて代わりにWeb検索調査し、結果をdata/claude-fallback-results.jsonへcommit・pushする設計\n・GAS側にsyncClaudeResearchFromGithub_を追加し、collectAIResearch実行時に毎回このファイルを取りに行って収集ログへ反映する(progress-tracker-dashboardのsyncFromGithubと同じプル型構成。Claudeセッションからscript.google.com経由でGASへ直接書き込めない制約を回避)\n・ソースURLで重複排除し、【毎日】【N回】の繰り返し設定も引き継ぐ\n・日次トリガーを待たずに手動で反映確認できるsyncClaudeResearchOnly()も追加\n・data/claude-fallback-results.jsonのスキーマと手順をREADMEに記載し、Claude調査ルーム向けの依頼文を作成しユーザーへ渡した",
+      "issues": "",
+      "manualSetup": "1) Apps Scriptエディタで最新のgas/Code.gsを貼り付けて保存(doGet/doPostは変更していないため再デプロイ不要)。2) 新しいClaude Codeセッション(調査ルーム)を作成し、渡した依頼文を貼り付けて自己バインドのRoutineとして設定する。",
+      "note": "GAS側の実装・data/claude-fallback-results.jsonの用意・README記載まではコード側で完了。専用のClaude調査ルーム(別セッション)の作成と依頼文の貼り付けは人の対応待ち。",
+      "output": "gas/Code.gs, data/claude-fallback-results.json",
+      "parentTask": "Gemini調査実行",
+      "isSubtask": true,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "usage-tracker",
+      "task": "使用量分析ダッシュボード",
+      "status": "未着手",
+      "priority": "中",
+      "category": "manual",
+      "updated": "2026-08-05",
+      "detail": "・目的: Claude Codeでの作業について、1日にどれくらいのタスクをこなせるか、どのくらいの作業量で利用上限に達するかを実測データから把握したい(公式の換算指標は無いため、自前でデータを積み上げて相関を見る方針)\n・実装進捗管理シートに新しいタブを2つ追加する予定: 「使用量ログ」(Repo, Task, 着手日時, 完了日時, 所要時間, 規模感, PR差分行数)と「利用上限ログ」(日時, 直前のタスク, メモ。ユーザーが手動記録)\n・新しいGitHubリポジトリ・専用のApps Script・GitHub Pagesを新規に用意し、日別のタスク完了件数/所要時間の推移と、利用上限ログを並べて見られる表示を作る想定\n・リポジトリ名・専用ルームでの構築を依頼する依頼文は作成済み(ユーザーへ渡し済み)。実際のリポジトリ作成・ルーム開始はまだ行われていない",
+      "issues": "使用量ログへの自動記録(各Routine側がタスク着手・完了のたびに書き込む部分)は、新ダッシュボードのタブ構成が固まってから別途各Routineへ依頼する必要があり、まだ着手していない。",
+      "manualSetup": "",
+      "note": "【作業タスク】新しいリポジトリ・専用ルームを作ってユーザー(または専用ルーム)が構築する想定。共有Routineの実装対象ではない。",
+      "output": "",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    },
+    {
+      "repo": "Knowledge-Dashboard",
+      "task": "ナレッジ管理ダッシュボード",
+      "status": "対応中",
+      "priority": "中",
+      "category": "manual",
+      "updated": "2026-08-02",
+      "detail": "・目的: progress-tracker-dashboardが持つ各プロジェクトの実装知見(detail/issues/manualSetup等)を横断的に集約し、(1)人が検索・閲覧できるダッシュボードと(2)他のClaude Codeセッションが着手前に参考値として機械的に取得できるJSONの両方を提供する。あわせて各知見から関連するGoogleスプレッドシートへ直接アクセスできるようにする\n・アーキテクチャ案(依頼文として渡し済み): progress-tracker-dashboardのdata/tasks.jsonを正本としプル型で取得(書き込み不要のためGAS新設は不要)。GitHub Actionsで定期的に取得・再帰的に平坦化してdata/knowledge-index.jsonを生成・コミットし、index.html(GitHub Pages)で検索・閲覧できるようにする\n・スプレッドシートリンクの抽出ルール(完全URL採用/「SPREADSHEET_ID: <ID>」記載からのURL再構成)、実装データ(集約元raw URL、既知リポジトリ一覧、共通の実装進捗管理シートURL)も依頼文に含めて渡した\n・他のClaude Codeセッションからは https://raw.githubusercontent.com/gurii-gabreh/Knowledge-Dashboard/main/data/knowledge-index.json を直接取得して過去の実装知見を参照できる設計とした",
+      "issues": "専用ルームでの実際の構築(GitHub Actionsワークフロー・index.html・GitHub Pages有効化)はまだ行われていない(依頼文の受け渡しのみ完了)。",
+      "manualSetup": "",
+      "note": "【作業タスク】リポジトリ(gurii-gabreh/Knowledge-Dashboard)は作成済み。専用の別ルームで構築を開始中。共有Routineの実装対象ではない。",
+      "output": "",
+      "parentTask": "",
+      "isSubtask": false,
+      "spreadsheetUrls": [
+        "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit"
+      ]
+    }
+  ]
+}
