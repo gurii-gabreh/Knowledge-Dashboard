@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ナレッジダッシュボード｜スプレッドシート一覧</title>
+<title>ナレッジダッシュボード</title>
 <style>
   :root {
     --bg: #f5f6fa;
@@ -521,6 +521,126 @@
     font-family: inherit;
   }
   .mi-delete:hover { text-decoration: underline; }
+
+  .tab-row {
+    display: flex;
+    gap: 6px;
+    margin: 20px 0 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    appearance: none;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 9px 4px 11px;
+    margin-bottom: -1px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent-strong); border-bottom-color: var(--accent); }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .k-list { display: flex; flex-direction: column; gap: 10px; }
+  .k-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .k-card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .k-card-head:hover { background: var(--surface-raised); }
+  .k-card-head .caret {
+    width: 9px; height: 9px;
+    margin-top: 5px;
+    border-right: 2px solid var(--text-faint);
+    border-bottom: 2px solid var(--text-faint);
+    transform: rotate(-45deg);
+    transition: transform 0.15s;
+    flex: none;
+  }
+  .k-card.collapsed .k-card-head .caret { transform: rotate(45deg); }
+  .k-card-main { flex: 1; min-width: 0; }
+  .k-card-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+    margin: 0 0 4px;
+  }
+  .k-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    font-size: 11.5px;
+    color: var(--text-faint);
+  }
+  .k-tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .k-tag.repo { color: var(--accent-strong); border-color: var(--accent-soft); background: var(--accent-soft); }
+  .k-tag.status-done { color: var(--accent-strong); }
+  .k-tag.status-open { color: var(--warn); }
+  .k-card-body {
+    padding: 0 16px 16px 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .k-card.collapsed .k-card-body { display: none; }
+  .k-section h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-faint);
+    font-weight: 600;
+    margin: 0 0 5px;
+  }
+  .k-section p, .k-section pre {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+    font-family: inherit;
+  }
+  .k-section.issues p { color: var(--warn); }
+  .k-section a { color: var(--accent-strong); }
+  .k-toolbar-note {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin: -8px 0 18px;
+  }
+  .k-toolbar-note code {
+    font-family: var(--mono);
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 11.5px;
+  }
+  .k-state { text-align: center; padding: 48px 16px; color: var(--text-muted); font-size: 14px; }
 </style>
 </head>
 <body>
@@ -529,42 +649,81 @@
   <header class="page-head">
     <div>
       <p class="eyebrow">Knowledge Dashboard</p>
-      <h1>スプレッドシート一覧</h1>
+      <h1 id="pageTitle">スプレッドシート一覧</h1>
     </div>
   </header>
-  <p class="subtitle">
+  <p class="subtitle" id="pageSubtitle">
     Google Drive に蓄積されたナレッジ用スプレッドシートの一覧です。Claude は Google Drive コネクタ経由でこれらのファイルに直接アクセス・内容参照できるため、この一覧はそのまま AI からの参照先マップとしても機能します。
     データは <code>data/spreadsheets.json</code> を元に生成しています。
   </p>
 
-  <div class="stats" id="stats"></div>
-
-  <div class="toolbar">
-    <div class="search-box">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="searchInput" type="text" placeholder="タイトル・フォルダ・所有者で検索…" autocomplete="off">
-    </div>
-    <select id="sortSel">
-      <option value="modified_desc">更新日が新しい順</option>
-      <option value="modified_asc">更新日が古い順</option>
-      <option value="title_asc">タイトル A→Z</option>
-      <option value="category_asc">カテゴリ順</option>
-    </select>
-    <button type="button" id="settingsBtn" class="icon-btn">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3 13.09H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      表示設定
-    </button>
+  <div class="tab-row" role="tablist">
+    <button type="button" class="tab-btn active" id="tabBtnSheets" role="tab" aria-selected="true">📊 スプレッドシート一覧</button>
+    <button type="button" class="tab-btn" id="tabBtnKnowledge" role="tab" aria-selected="false">🧠 実装ナレッジ</button>
   </div>
 
-  <div class="chip-row" id="chipRow"></div>
+  <div class="view active" id="viewSheets">
+    <div class="stats" id="stats"></div>
 
-  <div id="groups"></div>
-  <div class="empty-state" id="emptyState" style="display:none;">条件に一致するスプレッドシートがありません。</div>
+    <div class="toolbar">
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="searchInput" type="text" placeholder="タイトル・フォルダ・所有者で検索…" autocomplete="off">
+      </div>
+      <select id="sortSel">
+        <option value="modified_desc">更新日が新しい順</option>
+        <option value="modified_asc">更新日が古い順</option>
+        <option value="title_asc">タイトル A→Z</option>
+        <option value="category_asc">カテゴリ順</option>
+      </select>
+      <button type="button" id="settingsBtn" class="icon-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3 13.09H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        表示設定
+      </button>
+    </div>
 
-  <footer>
-    <span class="note" id="genNote"></span>
-    <span>出典: Google Drive（gurii.gabreh.0516@gmail.com）</span>
-  </footer>
+    <div class="chip-row" id="chipRow"></div>
+
+    <div id="groups"></div>
+    <div class="empty-state" id="emptyState" style="display:none;">条件に一致するスプレッドシートがありません。</div>
+
+    <footer>
+      <span class="note" id="genNote"></span>
+      <span>出典: Google Drive（gurii.gabreh.0516@gmail.com）</span>
+    </footer>
+  </div>
+
+  <div class="view" id="viewKnowledge">
+    <p class="k-toolbar-note">
+      実装知見・要件知見の集約データです。人が検索・閲覧できるほか、他の Claude Code セッションが
+      <code>data/knowledge-index.json</code>（<code id="rawUrlLabel">raw.githubusercontent.com 上の URL</code>）を直接 fetch して、過去の実装ナレッジをそのまま参照する用途を想定しています。
+    </p>
+
+    <div class="stats" id="kStats"></div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="kSearchInput" type="text" placeholder="タスク内容・detail・issuesで検索…" autocomplete="off">
+      </div>
+      <select id="kSortSel">
+        <option value="updated_desc">更新日が新しい順</option>
+        <option value="updated_asc">更新日が古い順</option>
+        <option value="repo_asc">リポジトリ順</option>
+      </select>
+    </div>
+
+    <div class="chip-row" id="kRepoChipRow"></div>
+    <div class="chip-row" id="kTypeChipRow"></div>
+
+    <div class="k-list" id="kList"></div>
+    <div class="k-state" id="kState" style="display:none;"></div>
+
+    <footer>
+      <span class="note" id="kGenNote"></span>
+      <span>出典: <a href="https://github.com/gurii-gabreh/progress-tracker-dashboard" target="_blank" rel="noopener">gurii-gabreh/progress-tracker-dashboard</a></span>
+    </footer>
+  </div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" hidden>
@@ -950,6 +1109,257 @@ document.getElementById("genNote").textContent =
   `最終取得: ${fmtDate(DATA.generatedAt)}（Claude が Google Drive コネクタ経由で取得）／表示設定はこのブラウザに保存されます`;
 
 renderAll();
+
+/* ---------------- Knowledge view ---------------- */
+
+const KNOWLEDGE_URL = "./data/knowledge-index.json";
+const KNOWLEDGE_RAW_URL = "https://raw.githubusercontent.com/gurii-gabreh/Knowledge-Dashboard/main/data/knowledge-index.json";
+document.getElementById("rawUrlLabel").textContent = KNOWLEDGE_RAW_URL;
+
+let kData = null;
+let kLoaded = false;
+let kLoading = false;
+let kQuery = "";
+let kSortMode = "updated_desc";
+let kActiveRepos = new Set();
+let kActiveTypes = new Set();
+const kCollapsed = new Set();
+const kExpandedDefault = false;
+
+const TYPE_LABEL = { task: "実装タスク", requirement: "要件定義", userPattern: "ユーザー傾向" };
+const STATUS_DONE = new Set(["完了"]);
+
+function kItemTitle(item) {
+  if (item.type === "task") return item.title || item.task || item.id || "(無題タスク)";
+  if (item.type === "requirement") return item.title || item.name || item.summary || item.id || "(無題要件)";
+  if (item.type === "userPattern") return item.trend || item.id || "(無題パターン)";
+  return item.id || "(無題)";
+}
+
+function kItemDate(item) {
+  return item.updated || item.confirmedAt || item.date || null;
+}
+
+function kItemSearchable(item) {
+  return Object.values(item)
+    .map(v => Array.isArray(v) ? v.join(" ") : (typeof v === "string" ? v : ""))
+    .join(" ")
+    .toLowerCase();
+}
+
+function kMatches(item) {
+  if (kActiveTypes.size && !kActiveTypes.has(item.type)) return false;
+  if (kActiveRepos.size && !kActiveRepos.has(item.repo || "(repo未設定)")) return false;
+  if (!kQuery) return true;
+  return kItemSearchable(item).includes(kQuery.toLowerCase());
+}
+
+function kSortItems(list) {
+  const arr = [...list];
+  switch (kSortMode) {
+    case "updated_asc":
+      arr.sort((a, b) => (kItemDate(a) || "").localeCompare(kItemDate(b) || ""));
+      break;
+    case "repo_asc":
+      arr.sort((a, b) => (a.repo || "").localeCompare(b.repo || "", "ja") || (kItemDate(b) || "").localeCompare(kItemDate(a) || ""));
+      break;
+    default:
+      arr.sort((a, b) => (kItemDate(b) || "").localeCompare(kItemDate(a) || ""));
+  }
+  return arr;
+}
+
+function renderKStats() {
+  const items = kData ? kData.items : [];
+  const repos = new Set(items.map(i => i.repo).filter(Boolean));
+  const tasks = items.filter(i => i.type === "task");
+  const openIssues = tasks.filter(i => (i.issues || "").trim()).length;
+  const tiles = [
+    { num: items.length, label: "ナレッジ件数" },
+    { num: repos.size, label: "対象リポジトリ数" },
+    { num: tasks.length, label: "実装タスク" },
+    { num: openIssues, label: "既知の課題(issues)あり" },
+  ];
+  document.getElementById("kStats").innerHTML = tiles.map(t =>
+    `<div class="stat-tile"><div class="num">${t.num}</div><div class="label">${t.label}</div></div>`
+  ).join("");
+}
+
+function renderKChips() {
+  const items = kData ? kData.items : [];
+  const repoCounts = {};
+  const typeCounts = {};
+  items.forEach(i => {
+    const r = i.repo || "(repo未設定)";
+    repoCounts[r] = (repoCounts[r] || 0) + 1;
+    typeCounts[i.type] = (typeCounts[i.type] || 0) + 1;
+  });
+
+  const repos = Object.keys(repoCounts).sort((a, b) => repoCounts[b] - repoCounts[a]);
+  const repoRow = document.getElementById("kRepoChipRow");
+  repoRow.innerHTML = repos.map(r =>
+    `<span class="chip${kActiveRepos.has(r) ? " active" : ""}" data-repo="${escapeAttr(r)}">${escapeHtml(r)} <span class="count">${repoCounts[r]}</span></span>`
+  ).join("");
+  repoRow.querySelectorAll(".chip").forEach(el => {
+    el.addEventListener("click", () => {
+      const r = el.dataset.repo;
+      if (kActiveRepos.has(r)) kActiveRepos.delete(r); else kActiveRepos.add(r);
+      renderKChips();
+      renderKList();
+    });
+  });
+
+  const types = Object.keys(typeCounts);
+  const typeRow = document.getElementById("kTypeChipRow");
+  typeRow.innerHTML = types.map(t =>
+    `<span class="chip${kActiveTypes.has(t) ? " active" : ""}" data-type="${escapeAttr(t)}">${escapeHtml(TYPE_LABEL[t] || t)} <span class="count">${typeCounts[t]}</span></span>`
+  ).join("");
+  typeRow.querySelectorAll(".chip").forEach(el => {
+    el.addEventListener("click", () => {
+      const t = el.dataset.type;
+      if (kActiveTypes.has(t)) kActiveTypes.delete(t); else kActiveTypes.add(t);
+      renderKChips();
+      renderKList();
+    });
+  });
+}
+
+function kCardKey(item, idx) { return item.id ? `${item.type}:${item.id}` : `${item.type}:${idx}`; }
+
+function renderKCard(item, idx) {
+  const key = kCardKey(item, idx);
+  const collapsed = !kCollapsed.has(key) ? "" : " collapsed";
+  const title = kItemTitle(item);
+  const date = kItemDate(item);
+  const statusClass = item.status ? (STATUS_DONE.has(item.status) ? "status-done" : "status-open") : "";
+
+  const sections = [];
+  if (item.type === "task") {
+    if (item.task && item.title && item.task !== item.title) {
+      sections.push(`<div class="k-section"><h4>タスク内容</h4><p>${escapeHtml(item.task)}</p></div>`);
+    }
+    if (item.detail) sections.push(`<div class="k-section"><h4>実装ナレッジ(detail)</h4><p>${escapeHtml(item.detail)}</p></div>`);
+    if (item.issues) sections.push(`<div class="k-section issues"><h4>既知の問題・制約(issues)</h4><p>${escapeHtml(item.issues)}</p></div>`);
+    if (item.output) sections.push(`<div class="k-section"><h4>成果物(output)</h4><p>${/^https?:\/\//.test(item.output) ? `<a href="${escapeAttr(item.output)}" target="_blank" rel="noopener">${escapeHtml(item.output)}</a>` : escapeHtml(item.output)}</p></div>`);
+  } else if (item.type === "requirement") {
+    Object.entries(item).forEach(([k, v]) => {
+      if (["type", "id"].includes(k) || !v) return;
+      sections.push(`<div class="k-section"><h4>${escapeHtml(k)}</h4><p>${escapeHtml(Array.isArray(v) ? v.join("\n") : String(v))}</p></div>`);
+    });
+  } else if (item.type === "userPattern") {
+    if (item.mitigation) sections.push(`<div class="k-section"><h4>対策(mitigation)</h4><p>${escapeHtml(item.mitigation)}</p></div>`);
+    if (item.observedIn && item.observedIn.length) sections.push(`<div class="k-section"><h4>観測例(observedIn)</h4><p>${escapeHtml(item.observedIn.join("\n"))}</p></div>`);
+  }
+
+  return `<div class="k-card${collapsed}" data-key="${escapeAttr(key)}">
+    <div class="k-card-head">
+      <span class="caret"></span>
+      <div class="k-card-main">
+        <p class="k-card-title">${escapeHtml(title)}</p>
+        <div class="k-meta">
+          ${item.repo ? `<span class="k-tag repo">${escapeHtml(item.repo)}</span>` : ""}
+          <span class="k-tag">${escapeHtml(TYPE_LABEL[item.type] || item.type)}</span>
+          ${item.status ? `<span class="k-tag ${statusClass}">${escapeHtml(item.status)}</span>` : ""}
+          ${item.id ? `<span class="k-tag">${escapeHtml(item.id)}</span>` : ""}
+          ${date ? `<span>${escapeHtml(date)}</span>` : ""}
+        </div>
+      </div>
+    </div>
+    <div class="k-card-body">${sections.join("") || `<div class="k-section"><p>詳細情報はありません。</p></div>`}</div>
+  </div>`;
+}
+
+function renderKList() {
+  const listEl = document.getElementById("kList");
+  const stateEl = document.getElementById("kState");
+
+  if (kLoading) {
+    listEl.innerHTML = "";
+    stateEl.style.display = "block";
+    stateEl.textContent = "読み込み中…";
+    return;
+  }
+  if (!kData) {
+    listEl.innerHTML = "";
+    stateEl.style.display = "block";
+    stateEl.innerHTML = `ナレッジデータの取得に失敗しました。<br>ローカルファイルを直接ブラウザで開いている場合、fetch がブロックされます。GitHub Pages 等のサーバー経由で開くか、<a href="${KNOWLEDGE_RAW_URL}" target="_blank" rel="noopener">data/knowledge-index.json を直接開いて</a>ご確認ください。`;
+    return;
+  }
+
+  const items = kData.items || [];
+  const filtered = kSortItems(items.filter(kMatches));
+
+  if (!filtered.length) {
+    listEl.innerHTML = "";
+    stateEl.style.display = "block";
+    stateEl.textContent = "条件に一致するナレッジがありません。";
+    return;
+  }
+  stateEl.style.display = "none";
+  listEl.innerHTML = filtered.map((item, idx) => renderKCard(item, idx)).join("");
+
+  listEl.querySelectorAll(".k-card-head").forEach(el => {
+    el.addEventListener("click", () => {
+      const card = el.closest(".k-card");
+      const key = card.dataset.key;
+      if (kCollapsed.has(key)) kCollapsed.delete(key); else kCollapsed.add(key);
+      card.classList.toggle("collapsed");
+    });
+  });
+}
+
+async function loadKnowledge() {
+  if (kLoaded || kLoading) return;
+  kLoading = true;
+  renderKList();
+  try {
+    const res = await fetch(KNOWLEDGE_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    kData = await res.json();
+  } catch (e) {
+    kData = null;
+  }
+  kLoading = false;
+  kLoaded = true;
+  renderKStats();
+  renderKChips();
+  renderKList();
+  document.getElementById("kGenNote").textContent = kData && kData.generatedAt
+    ? `最終生成: ${fmtDate(kData.generatedAt)}（GitHub Actions が progress-tracker-dashboard から自動集約）`
+    : "";
+}
+
+document.getElementById("kSearchInput").addEventListener("input", (e) => {
+  kQuery = e.target.value;
+  renderKList();
+});
+document.getElementById("kSortSel").addEventListener("change", (e) => {
+  kSortMode = e.target.value;
+  renderKList();
+});
+
+const tabBtnSheets = document.getElementById("tabBtnSheets");
+const tabBtnKnowledge = document.getElementById("tabBtnKnowledge");
+const viewSheets = document.getElementById("viewSheets");
+const viewKnowledge = document.getElementById("viewKnowledge");
+
+function showTab(tab) {
+  const sheets = tab === "sheets";
+  tabBtnSheets.classList.toggle("active", sheets);
+  tabBtnKnowledge.classList.toggle("active", !sheets);
+  tabBtnSheets.setAttribute("aria-selected", String(sheets));
+  tabBtnKnowledge.setAttribute("aria-selected", String(!sheets));
+  viewSheets.classList.toggle("active", sheets);
+  viewKnowledge.classList.toggle("active", !sheets);
+  document.getElementById("pageTitle").textContent = sheets ? "スプレッドシート一覧" : "実装ナレッジ";
+  document.getElementById("pageSubtitle").innerHTML = sheets
+    ? 'Google Drive に蓄積されたナレッジ用スプレッドシートの一覧です。Claude は Google Drive コネクタ経由でこれらのファイルに直接アクセス・内容参照できるため、この一覧はそのまま AI からの参照先マップとしても機能します。データは <code>data/spreadsheets.json</code> を元に生成しています。'
+    : '複数リポジトリ(kizashi・supermarket-price-tracker・gemini-monitor 等)の実装タスクに蓄積された知見(何を・なぜ・どう実装したか、既知の問題点)と、新規リポジトリの要件定義・ユーザーの思考パターンを横断集約したビューです。データは <code>data/knowledge-index.json</code> を元に生成しています。';
+  if (!sheets) loadKnowledge();
+}
+
+tabBtnSheets.addEventListener("click", () => showTab("sheets"));
+tabBtnKnowledge.addEventListener("click", () => showTab("knowledge"));
 </script>
 </body>
 </html>
