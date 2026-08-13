@@ -28,6 +28,7 @@ jobs:
         run: |
           mkdir -p _site
           cp dashboard.html _site/index.html
+          cp dashboard.html _site/dashboard.html
           cp -r data _site/data
 
       - name: Setup Pages
