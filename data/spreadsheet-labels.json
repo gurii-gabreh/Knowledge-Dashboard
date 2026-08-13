@@ -1,0 +1,41 @@
+{
+  "description": "data/spreadsheets.json の各エントリ(id)に対応する、対象アプリ名・アプリの概要の手動管理データ。data/spreadsheets.jsonはGASが毎日Google Driveのメタデータから自動で全件上書き生成するため、この2項目(Driveのメタデータには存在しない情報)はここで別管理する。新しいショートカットを専用Driveフォルダへ追加した場合、このファイルにも該当idのエントリを追記すること(未登録の場合は表示側で「不明」と出る)。",
+  "labels": {
+    "1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY": {
+      "appName": "CHAPRO PROMPT MANAGER",
+      "description": "参考プロンプトの自動収集と、プロンプトのナレッジ管理(https://gurii-gabreh.github.io/PROMPT-MANAGER/)"
+    },
+    "1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw": {
+      "appName": "progress-tracker-dashboard",
+      "description": "複数リポジトリの実装状況・進捗を一覧化する自立型トラッカーアプリ自身のデータ管理シート"
+    },
+    "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg": {
+      "appName": "gemini-monitor",
+      "description": "Gemini APIの時間帯別混雑状況を自動測定・可視化するWebアプリ"
+    },
+    "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY": {
+      "appName": "supermarket-price-tracker",
+      "description": "スーパーの食品価格を定期収集・可視化するアプリ"
+    },
+    "1MPThq7ZKAZrai_kDHD62eE6vHmkjv0CKIRiFBMYOELE": {
+      "appName": "自動スクショ保存アプリ",
+      "description": "スクリーンショットを自動で保存するアプリのデータ"
+    },
+    "1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o": {
+      "appName": "ai-research-radar",
+      "description": "キーワードを与えるとGemini APIが最新のAI技術情報・活用事例を自動調査して一覧化するアプリの収集結果ログ"
+    },
+    "1lApRylSAFDfVWMkMvNhjUnkKJBg7KUNw-yd0e19KA7o": {
+      "appName": "study-app",
+      "description": "問題集・学習コンテンツを扱う学習用アプリ"
+    },
+    "1NljsM1HOIOqsEW7VBWEdPVdu3SoYJFnuz5t1XhxX3pQ": {
+      "appName": "text-extraction",
+      "description": "画像の文字起こし(OCR)処理を行うアプリのデータベース"
+    },
+    "1GrR8vUc5A_C2Lo6C4Yrt_qqoN_gk6-M_Qw1WAuhp0ZI": {
+      "appName": "AIツール一覧(参照資料)",
+      "description": "第二意見チェック等で使うAI候補を探す際に参照するAIツール一覧(progress-tracker-dashboardのPOL-001/002・ai-config.json参照)"
+    }
+  }
+}
