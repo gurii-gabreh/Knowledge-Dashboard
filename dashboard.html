@@ -949,19 +949,24 @@ function renderGroups() {
       <table>
         <thead><tr>
           <th class="col-title">タイトル</th>
+          <th class="col-desc">概要</th>
           <th class="col-cat">カテゴリ</th>
           <th class="col-date">最終更新</th>
           <th class="col-owner">所有者</th>
           <th class="col-actions"></th>
         </tr></thead>
         <tbody>
-          ${filtered.map(item => `<tr>
+          ${filtered.map(item => {
+            const desc = LABELS[item.id] ? LABELS[item.id].description : null;
+            return `<tr>
             <td class="col-title"><a href="${item.url}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a></td>
+            <td class="col-desc${desc ? "" : " unknown"}">${desc ? escapeHtml(desc) : "-"}</td>
             <td class="col-cat">${escapeHtml(item.category)}</td>
             <td class="col-date">${fmtDate(item.modifiedTime)}</td>
             <td class="col-owner">${item.shared ? `<span class="badge">共有</span> ${escapeHtml(item.owner.split("@")[0])}` : "自分"}</td>
             <td class="col-actions"><button type="button" class="row-hide" data-id="${escapeAttr(item.id)}" title="一覧から外す（設定でいつでも再表示可）">×</button></td>
-          </tr>`).join("")}
+          </tr>`;
+          }).join("")}
         </tbody>
       </table>
     </div>
@@ -1148,6 +1153,7 @@ async function loadLabelsData() {
     console.error("data/spreadsheet-labels.json の取得に失敗しました", e);
   }
   renderAppsTable();
+  renderGroups();
 }
 loadLabelsData();
 
