@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T21:02:49.507Z",
+  "generatedAt": "2026-08-13T21:02:49.273Z",
   "source": "Google Drive folder 1K7teb5iGkdphV78M773vxlhbNd2fnQxd (shortcuts) via Apps Script (update-spreadsheets.gs)",
   "owner": "gurii.gabreh.0516@gmail.com",
   "items": [
@@ -15,7 +15,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-11T12:59:51.842Z",
-      "modifiedTime": "2026-08-12T21:01:34.262Z"
+      "modifiedTime": "2026-08-13T21:01:30.759Z"
     },
     {
       "id": "1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw",
@@ -29,7 +29,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-26T02:42:48.384Z",
-      "modifiedTime": "2026-08-12T20:23:03.165Z"
+      "modifiedTime": "2026-08-13T20:23:09.989Z"
     },
     {
       "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
@@ -45,7 +45,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-06-16T23:29:11.621Z",
-      "modifiedTime": "2026-08-12T20:21:53.068Z"
+      "modifiedTime": "2026-08-13T02:22:15.068Z"
     },
     {
       "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
@@ -61,7 +61,22 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": true,
       "createdTime": "2026-04-08T14:54:53.243Z",
-      "modifiedTime": "2026-08-12T01:36:56.131Z"
+      "modifiedTime": "2026-08-13T01:36:54.591Z"
+    },
+    {
+      "id": "1V4bbJTbWvg2e37x7iIFEPbpv4Vc5slelF2-EI6CgouA",
+      "title": "学習用のナレッジ",
+      "url": "https://docs.google.com/spreadsheets/d/1V4bbJTbWvg2e37x7iIFEPbpv4Vc5slelF2-EI6CgouA/edit?usp=drivesdk",
+      "category": "マイドライブ / AI",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ",
+        "AI"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": false,
+      "createdTime": "2026-08-13T01:18:00.288Z",
+      "modifiedTime": "2026-08-13T01:22:33.745Z"
     },
     {
       "id": "1MPThq7ZKAZrai_kDHD62eE6vHmkjv0CKIRiFBMYOELE",
