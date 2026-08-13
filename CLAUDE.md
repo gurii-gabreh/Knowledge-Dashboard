@@ -4,6 +4,7 @@
 
 **既知の注意点(2026-08-13時点)**: このリポジトリのGitHub上の「デフォルトブランチ」設定が、2026-08-01時点の古いブランチ`claude/spreadsheet-list-dashboard-te7yvs`のままになっている(KND-007/KND-008参照)。ブランチ指定なしでこのリポジトリのファイルを取得すると古い内容を掴む可能性があるため、**必ず`main`ブランチを明示指定すること**。
 
+<!-- CORE-RULES:START (auto-synced from progress-tracker-dashboard/data/claude-core-rules.md -- do not edit by hand, edit the source instead) -->
 ## 最重要ルール(このファイルに直接記載。fetch不要で必ず読める)
 
 - このリポジトリは `gurii-gabreh/progress-tracker-dashboard` が進捗・実装ナレッジを一元管理する対象の1つ
@@ -16,3 +17,6 @@
 - https://raw.githubusercontent.com/gurii-gabreh/progress-tracker-dashboard/main/README.md
 - https://raw.githubusercontent.com/gurii-gabreh/progress-tracker-dashboard/main/data/policy.json
 - https://raw.githubusercontent.com/gurii-gabreh/progress-tracker-dashboard/main/data/ai-config.json
+<!-- CORE-RULES:END -->
+
+上記ブロックは`gurii-gabreh/progress-tracker-dashboard`の`data/claude-core-rules.md`が正本で、GitHub Actionsが自動同期する。直接編集しても次回同期で上書きされる。
