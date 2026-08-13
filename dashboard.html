@@ -308,6 +308,32 @@
   }
   tbody tr:hover .row-hide, tbody tr:focus-within .row-hide { opacity: 1; }
   .row-hide:hover { color: var(--warn); background: var(--warn-soft); }
+  /* 📱 アプリ一覧タブ(2026-08-13追加)。data/spreadsheets.json + data/spreadsheet-labels.json を
+     id で突き合わせ、フォルダ分類ではなく「1行=1アプリ」で見せるための単一テーブル。
+     group/table系の既存見た目(border・shadow・thead th等)をそのまま流用する。 */
+  .table-wrap {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+  .table-wrap table { min-width: 760px; table-layout: fixed; }
+  .table-wrap th.col-app, .table-wrap td.col-app { width: 14%; }
+  .table-wrap th.col-desc, .table-wrap td.col-desc { width: 30%; }
+  .table-wrap th.col-cat, .table-wrap td.col-cat { width: 16%; }
+  .table-wrap th.col-title, .table-wrap td.col-title { width: 20%; max-width: none; }
+  .table-wrap th.col-date, .table-wrap td.col-date { width: 10%; }
+  .table-wrap th.col-owner, .table-wrap td.col-owner { width: 10%; }
+  td.col-app { font-weight: 600; overflow-wrap: break-word; }
+  td.col-app.unknown, td.col-desc.unknown { color: var(--text-faint); font-style: italic; }
+  th.col-desc, td.col-desc { color: var(--text-muted); line-height: 1.5; }
+  th.col-cat, td.col-cat { color: var(--text-muted); overflow-wrap: break-word; white-space: normal; }
+  .table-wrap td.col-title a { white-space: normal; overflow-wrap: break-word; }
+  @media (max-width: 640px) {
+    .table-wrap { overflow-x: auto; }
+  }
+
   .badge {
     display: inline-block;
     font-size: 11px;
@@ -660,6 +686,7 @@
   <div class="tab-row" role="tablist">
     <button type="button" class="tab-btn active" id="tabBtnSheets" role="tab" aria-selected="true">📊 スプレッドシート一覧</button>
     <button type="button" class="tab-btn" id="tabBtnKnowledge" role="tab" aria-selected="false">🧠 実装ナレッジ</button>
+    <button type="button" class="tab-btn" id="tabBtnApps" role="tab" aria-selected="false">📱 アプリ一覧</button>
   </div>
 
   <div class="view active" id="viewSheets">
@@ -722,6 +749,49 @@
     <footer>
       <span class="note" id="kGenNote"></span>
       <span>出典: <a href="https://github.com/gurii-gabreh/progress-tracker-dashboard" target="_blank" rel="noopener">gurii-gabreh/progress-tracker-dashboard</a></span>
+    </footer>
+  </div>
+
+  <div class="view" id="viewApps">
+    <p class="k-toolbar-note">
+      1行 = 1アプリで表示する一覧です。<code>data/spreadsheets.json</code>(Driveの自動収集データ)と
+      <code>data/spreadsheet-labels.json</code>(アプリ名・概要の手動ラベル)をID(スプレッドシートのDrive file id)で
+      突き合わせて表示しています。ラベル未登録のシートは「不明」と表示されます。
+    </p>
+
+    <div class="stats" id="appsStats"></div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="appsSearchInput" type="text" placeholder="アプリ名・概要・カテゴリで検索…" autocomplete="off">
+      </div>
+      <select id="appsSortSel">
+        <option value="app_asc">アプリ名 A→Z</option>
+        <option value="modified_desc">更新日が新しい順</option>
+        <option value="modified_asc">更新日が古い順</option>
+        <option value="category_asc">カテゴリ順</option>
+      </select>
+    </div>
+
+    <div class="table-wrap" id="appsTableWrap">
+      <table>
+        <thead><tr>
+          <th class="col-app">対象アプリ名</th>
+          <th class="col-desc">概要</th>
+          <th class="col-cat">カテゴリ</th>
+          <th class="col-title">スプレッドシート</th>
+          <th class="col-date">最終更新</th>
+          <th class="col-owner">所有者</th>
+        </tr></thead>
+        <tbody id="appsTableBody"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="appsEmptyState" style="display:none;">条件に一致するアプリがありません。</div>
+
+    <footer>
+      <span class="note" id="appsGenNote"></span>
+      <span>出典: <code>data/spreadsheets.json</code> ＋ <code>data/spreadsheet-labels.json</code></span>
     </footer>
   </div>
 </div>
@@ -938,6 +1008,7 @@ function renderAll() {
   renderChips();
   renderGroups();
   if (!modalOverlay.hidden) renderManageList();
+  renderAppsTable();
 }
 
 function renderManageList() {
@@ -1077,6 +1148,101 @@ async function loadSpreadsheetsData() {
   renderAll();
 }
 loadSpreadsheetsData();
+
+/* ---------------- Apps view (1行=1アプリ、6列) ---------------- */
+// data/spreadsheets.json(Driveの自動収集データ)とdata/spreadsheet-labels.json(アプリ名・概要の
+// 手動ラベル、id突き合わせ)をJS側でjoinして1テーブルにする。フォルダ単位のgroupingは行わない
+// (スプレッドシート一覧タブと違い、あくまで1行=1アプリで見せるためのビュー)。
+
+const LABELS_URL = "./data/spreadsheet-labels.json";
+let LABELS = {};
+let appsQuery = "";
+let appsSortMode = "app_asc";
+
+async function loadLabelsData() {
+  try {
+    const res = await fetch(LABELS_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    LABELS = json.labels || {};
+  } catch (e) {
+    console.error("data/spreadsheet-labels.json の取得に失敗しました", e);
+  }
+  renderAppsTable();
+}
+loadLabelsData();
+
+function appsRows() {
+  return visibleItems().map(item => {
+    const label = LABELS[item.id];
+    return { item, appName: label ? label.appName : null, description: label ? label.description : null };
+  });
+}
+
+function matchesApps(row) {
+  if (!appsQuery) return true;
+  const hay = [row.appName || "", row.description || "", row.item.category, row.item.title].join(" ").toLowerCase();
+  return hay.includes(appsQuery.toLowerCase());
+}
+
+function sortAppsRows(rows) {
+  const arr = [...rows];
+  switch (appsSortMode) {
+    case "modified_desc": arr.sort((a, b) => new Date(b.item.modifiedTime) - new Date(a.item.modifiedTime)); break;
+    case "modified_asc": arr.sort((a, b) => new Date(a.item.modifiedTime) - new Date(b.item.modifiedTime)); break;
+    case "category_asc": arr.sort((a, b) => a.item.category.localeCompare(b.item.category, "ja") || (a.appName || "").localeCompare(b.appName || "", "ja")); break;
+    default: arr.sort((a, b) => (a.appName || "不明").localeCompare(b.appName || "不明", "ja"));
+  }
+  return arr;
+}
+
+function renderAppsTable() {
+  const body = document.getElementById("appsTableBody");
+  if (!body) return;
+
+  const all = appsRows();
+  const rows = sortAppsRows(all.filter(matchesApps));
+  const labeledCount = all.filter(r => r.appName).length;
+
+  document.getElementById("appsStats").innerHTML = [
+    { num: all.length, label: "表示中のスプレッドシート" },
+    { num: labeledCount, label: "アプリ名ラベル登録済み" },
+    { num: all.length - labeledCount, label: "ラベル未登録(不明)" },
+  ].map(t => `<div class="stat-tile"><div class="num">${t.num}</div><div class="label">${t.label}</div></div>`).join("");
+
+  document.getElementById("appsGenNote").textContent = DATA.generatedAt
+    ? `最終取得: ${fmtDate(DATA.generatedAt)}（スプレッドシート一覧タブと同じ自動収集データ）／アプリ名・概要は data/spreadsheet-labels.json の手動ラベル`
+    : "";
+
+  const wrap = document.getElementById("appsTableWrap");
+  const emptyState = document.getElementById("appsEmptyState");
+  if (!rows.length) {
+    wrap.style.display = "none";
+    emptyState.style.display = "block";
+    emptyState.textContent = all.length ? "条件に一致するアプリがありません。" : "表示できるスプレッドシートがありません。";
+    return;
+  }
+  wrap.style.display = "";
+  emptyState.style.display = "none";
+
+  body.innerHTML = rows.map(({ item, appName, description }) => `<tr>
+    <td class="col-app${appName ? "" : " unknown"}">${appName ? escapeHtml(appName) : "不明"}</td>
+    <td class="col-desc${description ? "" : " unknown"}">${description ? escapeHtml(description) : "-"}</td>
+    <td class="col-cat">${escapeHtml(item.category)}</td>
+    <td class="col-title"><a href="${item.url}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a></td>
+    <td class="col-date">${fmtDate(item.modifiedTime)}</td>
+    <td class="col-owner">${item.shared ? `<span class="badge">共有</span> ${escapeHtml(item.owner.split("@")[0])}` : "自分"}</td>
+  </tr>`).join("");
+}
+
+document.getElementById("appsSearchInput").addEventListener("input", (e) => {
+  appsQuery = e.target.value.trim();
+  renderAppsTable();
+});
+document.getElementById("appsSortSel").addEventListener("change", (e) => {
+  appsSortMode = e.target.value;
+  renderAppsTable();
+});
 
 /* ---------------- Knowledge view ---------------- */
 
@@ -1306,28 +1472,45 @@ document.getElementById("kSortSel").addEventListener("change", (e) => {
   renderKList();
 });
 
-const tabBtnSheets = document.getElementById("tabBtnSheets");
-const tabBtnKnowledge = document.getElementById("tabBtnKnowledge");
-const viewSheets = document.getElementById("viewSheets");
-const viewKnowledge = document.getElementById("viewKnowledge");
+const TAB_DEFS = {
+  sheets: {
+    btn: document.getElementById("tabBtnSheets"),
+    view: document.getElementById("viewSheets"),
+    title: "スプレッドシート一覧",
+    subtitle: 'Google Drive に蓄積されたナレッジ用スプレッドシートの一覧です。Claude は Google Drive コネクタ経由でこれらのファイルに直接アクセス・内容参照できるため、この一覧はそのまま AI からの参照先マップとしても機能します。データは <code>data/spreadsheets.json</code> を元に生成しています。',
+  },
+  knowledge: {
+    btn: document.getElementById("tabBtnKnowledge"),
+    view: document.getElementById("viewKnowledge"),
+    title: "実装ナレッジ",
+    subtitle: '複数リポジトリ(kizashi・supermarket-price-tracker・gemini-monitor 等)の実装タスクに蓄積された知見(何を・なぜ・どう実装したか、既知の問題点)と、新規リポジトリの要件定義・ユーザーの思考パターンを横断集約したビューです。データは <code>data/knowledge-index.json</code> を元に生成しています。',
+    onShow: loadKnowledge,
+  },
+  apps: {
+    btn: document.getElementById("tabBtnApps"),
+    view: document.getElementById("viewApps"),
+    title: "アプリ一覧",
+    subtitle: '1行=1アプリで見るビューです。<code>data/spreadsheets.json</code>と<code>data/spreadsheet-labels.json</code>をIDで突き合わせて、対象アプリ名・概要・カテゴリ・スプレッドシート・最終更新・所有者の6列で表示します。',
+    onShow: renderAppsTable,
+  },
+};
 
 function showTab(tab) {
-  const sheets = tab === "sheets";
-  tabBtnSheets.classList.toggle("active", sheets);
-  tabBtnKnowledge.classList.toggle("active", !sheets);
-  tabBtnSheets.setAttribute("aria-selected", String(sheets));
-  tabBtnKnowledge.setAttribute("aria-selected", String(!sheets));
-  viewSheets.classList.toggle("active", sheets);
-  viewKnowledge.classList.toggle("active", !sheets);
-  document.getElementById("pageTitle").textContent = sheets ? "スプレッドシート一覧" : "実装ナレッジ";
-  document.getElementById("pageSubtitle").innerHTML = sheets
-    ? 'Google Drive に蓄積されたナレッジ用スプレッドシートの一覧です。Claude は Google Drive コネクタ経由でこれらのファイルに直接アクセス・内容参照できるため、この一覧はそのまま AI からの参照先マップとしても機能します。データは <code>data/spreadsheets.json</code> を元に生成しています。'
-    : '複数リポジトリ(kizashi・supermarket-price-tracker・gemini-monitor 等)の実装タスクに蓄積された知見(何を・なぜ・どう実装したか、既知の問題点)と、新規リポジトリの要件定義・ユーザーの思考パターンを横断集約したビューです。データは <code>data/knowledge-index.json</code> を元に生成しています。';
-  if (!sheets) loadKnowledge();
+  for (const [key, def] of Object.entries(TAB_DEFS)) {
+    const active = key === tab;
+    def.btn.classList.toggle("active", active);
+    def.btn.setAttribute("aria-selected", String(active));
+    def.view.classList.toggle("active", active);
+  }
+  const def = TAB_DEFS[tab];
+  document.getElementById("pageTitle").textContent = def.title;
+  document.getElementById("pageSubtitle").innerHTML = def.subtitle;
+  if (def.onShow) def.onShow();
 }
 
-tabBtnSheets.addEventListener("click", () => showTab("sheets"));
-tabBtnKnowledge.addEventListener("click", () => showTab("knowledge"));
+for (const [key, def] of Object.entries(TAB_DEFS)) {
+  def.btn.addEventListener("click", () => showTab(key));
+}
 </script>
 </body>
 </html>
