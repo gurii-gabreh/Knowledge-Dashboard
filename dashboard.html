@@ -854,7 +854,6 @@ let state = loadState();
 let activeCategories = new Set();
 let query = "";
 let sortMode = "modified_desc";
-const collapsedGroups = new Set();
 
 function allItems() { return [...DATA.items, ...state.custom]; }
 function isHidden(id) { return state.hidden.includes(id); }
@@ -941,53 +940,33 @@ function renderGroups() {
   }
   emptyState.style.display = "none";
 
-  // group by category, preserving first-seen order per current sort
-  const groups = new Map();
-  filtered.forEach(item => {
-    if (!groups.has(item.category)) groups.set(item.category, []);
-    groups.get(item.category).push(item);
-  });
-
-  let html = "";
-  for (const [cat, list] of groups) {
-    const collapsed = collapsedGroups.has(cat);
-    html += `<div class="group${collapsed ? " collapsed" : ""}" data-group="${escapeAttr(cat)}">
-      <div class="group-head">
-        <span class="caret"></span>
-        <span class="gname">${escapeHtml(cat)}</span>
-        <span class="gcount">${list.length}</span>
-      </div>
-      <div class="group-body">
-        <table>
-          <thead><tr>
-            <th class="col-title">タイトル</th>
-            <th class="col-date">最終更新</th>
-            <th class="col-owner">所有者</th>
-            <th class="col-actions"></th>
-          </tr></thead>
-          <tbody>
-            ${list.map(item => `<tr>
-              <td class="col-title"><a href="${item.url}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a></td>
-              <td class="col-date">${fmtDate(item.modifiedTime)}</td>
-              <td class="col-owner">${item.shared ? `<span class="badge">共有</span> ${escapeHtml(item.owner.split("@")[0])}` : "自分"}</td>
-              <td class="col-actions"><button type="button" class="row-hide" data-id="${escapeAttr(item.id)}" title="一覧から外す（設定でいつでも再表示可）">×</button></td>
-            </tr>`).join("")}
-          </tbody>
-        </table>
-      </div>
-    </div>`;
-  }
+  // 以前はカテゴリ(フォルダ階層)ごとにgroupingしていたが、ほとんどのシートが
+  // 「マイドライブ」配下で階層自体に意味が薄く、逆に見づらいという指摘を受けて
+  // フォルダのgroup分けをやめ、1つのフラットな一覧テーブルに統一した(2026-08-13)。
+  // カテゴリの情報自体は列として残す。
+  const html = `<div class="group">
+    <div class="group-body">
+      <table>
+        <thead><tr>
+          <th class="col-title">タイトル</th>
+          <th class="col-cat">カテゴリ</th>
+          <th class="col-date">最終更新</th>
+          <th class="col-owner">所有者</th>
+          <th class="col-actions"></th>
+        </tr></thead>
+        <tbody>
+          ${filtered.map(item => `<tr>
+            <td class="col-title"><a href="${item.url}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a></td>
+            <td class="col-cat">${escapeHtml(item.category)}</td>
+            <td class="col-date">${fmtDate(item.modifiedTime)}</td>
+            <td class="col-owner">${item.shared ? `<span class="badge">共有</span> ${escapeHtml(item.owner.split("@")[0])}` : "自分"}</td>
+            <td class="col-actions"><button type="button" class="row-hide" data-id="${escapeAttr(item.id)}" title="一覧から外す（設定でいつでも再表示可）">×</button></td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
   container.innerHTML = html;
-
-  container.querySelectorAll(".group-head").forEach(el => {
-    el.addEventListener("click", () => {
-      const group = el.closest(".group");
-      const cat = group.dataset.group;
-      if (collapsedGroups.has(cat)) collapsedGroups.delete(cat);
-      else collapsedGroups.add(cat);
-      group.classList.toggle("collapsed");
-    });
-  });
 
   container.querySelectorAll(".row-hide").forEach(btn => {
     btn.addEventListener("click", (e) => {
