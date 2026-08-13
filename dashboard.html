@@ -709,8 +709,6 @@
       </button>
     </div>
 
-    <div class="chip-row" id="chipRow"></div>
-
     <div id="groups"></div>
     <div class="empty-state" id="emptyState" style="display:none;">条件に一致するスプレッドシートがありません。</div>
 
@@ -851,7 +849,6 @@ function saveState() {
 }
 
 let state = loadState();
-let activeCategories = new Set();
 let query = "";
 let sortMode = "modified_desc";
 
@@ -883,32 +880,12 @@ function renderStats() {
   ).join("");
 }
 
-function renderChips() {
-  const counts = {};
-  visibleItems().forEach(i => counts[i.category] = (counts[i.category]||0) + 1);
-  const cats = Object.keys(counts).sort((a,b) => counts[b]-counts[a]);
-  const row = document.getElementById("chipRow");
-  row.innerHTML = cats.map(c =>
-    `<span class="chip${activeCategories.has(c) ? " active" : ""}" data-cat="${escapeAttr(c)}">${escapeHtml(c)} <span class="count">${counts[c]}</span></span>`
-  ).join("");
-  row.querySelectorAll(".chip").forEach(el => {
-    el.addEventListener("click", () => {
-      const cat = el.dataset.cat;
-      if (activeCategories.has(cat)) activeCategories.delete(cat);
-      else activeCategories.add(cat);
-      renderChips();
-      renderGroups();
-    });
-  });
-}
-
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 function escapeAttr(s) { return escapeHtml(s); }
 
 function matches(item) {
-  if (activeCategories.size && !activeCategories.has(item.category)) return false;
   if (!query) return true;
   const hay = (item.title + " " + item.category + " " + item.owner).toLowerCase();
   return hay.includes(query.toLowerCase());
@@ -989,7 +966,6 @@ function hideItem(id) {
 
 function renderAll() {
   renderStats();
-  renderChips();
   renderGroups();
   if (!modalOverlay.hidden) renderManageList();
   renderAppsTable();
@@ -1024,7 +1000,6 @@ function renderManageList() {
       else if (!state.hidden.includes(id)) state.hidden.push(id);
       saveState();
       renderStats();
-      renderChips();
       renderGroups();
     });
   });
@@ -1036,7 +1011,6 @@ function renderManageList() {
       saveState();
       renderManageList();
       renderStats();
-      renderChips();
       renderGroups();
     });
   });
@@ -1078,7 +1052,6 @@ document.getElementById("showAllBtn").addEventListener("click", () => {
   saveState();
   renderManageList();
   renderStats();
-  renderChips();
   renderGroups();
 });
 document.getElementById("hideAllBtn").addEventListener("click", () => {
@@ -1086,7 +1059,6 @@ document.getElementById("hideAllBtn").addEventListener("click", () => {
   saveState();
   renderManageList();
   renderStats();
-  renderChips();
   renderGroups();
 });
 
@@ -1106,7 +1078,6 @@ document.getElementById("addForm").addEventListener("submit", (e) => {
   e.target.reset();
   renderManageList();
   renderStats();
-  renderChips();
   renderGroups();
 });
 
