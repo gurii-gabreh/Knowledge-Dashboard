@@ -675,7 +675,7 @@
   <header class="page-head">
     <div>
       <p class="eyebrow">Knowledge Dashboard</p>
-      <h1 id="pageTitle">スプレッドシート一覧</h1>
+      <h1 id="pageTitle">ナレッジデータ一覧</h1>
     </div>
   </header>
   <p class="subtitle" id="pageSubtitle">
@@ -684,7 +684,7 @@
   </p>
 
   <div class="tab-row" role="tablist">
-    <button type="button" class="tab-btn active" id="tabBtnSheets" role="tab" aria-selected="true">📊 スプレッドシート一覧</button>
+    <button type="button" class="tab-btn active" id="tabBtnSheets" role="tab" aria-selected="true">📊 ナレッジデータ一覧</button>
     <button type="button" class="tab-btn" id="tabBtnKnowledge" role="tab" aria-selected="false">🧠 実装ナレッジ</button>
     <button type="button" class="tab-btn" id="tabBtnApps" role="tab" aria-selected="false">📱 アプリ一覧</button>
   </div>
@@ -1152,7 +1152,7 @@ loadSpreadsheetsData();
 /* ---------------- Apps view (1行=1アプリ、6列) ---------------- */
 // data/spreadsheets.json(Driveの自動収集データ)とdata/spreadsheet-labels.json(アプリ名・概要の
 // 手動ラベル、id突き合わせ)をJS側でjoinして1テーブルにする。フォルダ単位のgroupingは行わない
-// (スプレッドシート一覧タブと違い、あくまで1行=1アプリで見せるためのビュー)。
+// (ナレッジデータ一覧タブと違い、あくまで1行=1アプリで見せるためのビュー)。
 
 const LABELS_URL = "./data/spreadsheet-labels.json";
 let LABELS = {};
@@ -1211,7 +1211,7 @@ function renderAppsTable() {
   ].map(t => `<div class="stat-tile"><div class="num">${t.num}</div><div class="label">${t.label}</div></div>`).join("");
 
   document.getElementById("appsGenNote").textContent = DATA.generatedAt
-    ? `最終取得: ${fmtDate(DATA.generatedAt)}（スプレッドシート一覧タブと同じ自動収集データ）／アプリ名・概要は data/spreadsheet-labels.json の手動ラベル`
+    ? `最終取得: ${fmtDate(DATA.generatedAt)}（ナレッジデータ一覧タブと同じ自動収集データ）／アプリ名・概要は data/spreadsheet-labels.json の手動ラベル`
     : "";
 
   const wrap = document.getElementById("appsTableWrap");
@@ -1476,7 +1476,7 @@ const TAB_DEFS = {
   sheets: {
     btn: document.getElementById("tabBtnSheets"),
     view: document.getElementById("viewSheets"),
-    title: "スプレッドシート一覧",
+    title: "ナレッジデータ一覧",
     subtitle: 'Google Drive に蓄積されたナレッジ用スプレッドシートの一覧です。Claude は Google Drive コネクタ経由でこれらのファイルに直接アクセス・内容参照できるため、この一覧はそのまま AI からの参照先マップとしても機能します。データは <code>data/spreadsheets.json</code> を元に生成しています。',
   },
   knowledge: {
