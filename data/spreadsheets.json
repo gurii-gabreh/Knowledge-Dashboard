@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T21:02:47.906Z",
+  "generatedAt": "2026-08-17T21:02:46.305Z",
   "source": "Google Drive folder 1K7teb5iGkdphV78M773vxlhbNd2fnQxd (shortcuts) via Apps Script (update-spreadsheets.gs)",
   "owner": "gurii.gabreh.0516@gmail.com",
   "items": [
@@ -15,7 +15,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-11T12:59:51.842Z",
-      "modifiedTime": "2026-08-16T20:59:36.117Z"
+      "modifiedTime": "2026-08-17T20:59:33.782Z"
     },
     {
       "id": "1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw",
@@ -29,7 +29,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-26T02:42:48.384Z",
-      "modifiedTime": "2026-08-16T20:22:59.162Z"
+      "modifiedTime": "2026-08-17T20:23:02.168Z"
     },
     {
       "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
@@ -45,7 +45,23 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-06-16T23:29:11.621Z",
-      "modifiedTime": "2026-08-16T20:22:07.524Z"
+      "modifiedTime": "2026-08-17T02:22:13.537Z"
+    },
+    {
+      "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
+      "title": "スーパーの食品価格一覧",
+      "url": "https://docs.google.com/spreadsheets/d/1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY/edit?usp=drivesdk",
+      "category": "マイドライブ / AI / スーパーの食品価格一覧",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ",
+        "AI",
+        "スーパーの食品価格一覧"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": true,
+      "createdTime": "2026-04-08T14:54:53.243Z",
+      "modifiedTime": "2026-08-17T01:39:38.018Z"
     },
     {
       "id": "1lApRylSAFDfVWMkMvNhjUnkKJBg7KUNw-yd0e19KA7o",
@@ -62,22 +78,6 @@
       "shared": false,
       "createdTime": "2026-06-07T02:47:23.101Z",
       "modifiedTime": "2026-08-16T04:41:25.621Z"
-    },
-    {
-      "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
-      "title": "スーパーの食品価格一覧",
-      "url": "https://docs.google.com/spreadsheets/d/1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY/edit?usp=drivesdk",
-      "category": "マイドライブ / AI / スーパーの食品価格一覧",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ",
-        "AI",
-        "スーパーの食品価格一覧"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": true,
-      "createdTime": "2026-04-08T14:54:53.243Z",
-      "modifiedTime": "2026-08-16T01:36:53.135Z"
     },
     {
       "id": "1V4bbJTbWvg2e37x7iIFEPbpv4Vc5slelF2-EI6CgouA",
