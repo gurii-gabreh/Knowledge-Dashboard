@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T21:02:46.305Z",
+  "generatedAt": "2026-08-18T21:02:54.972Z",
   "source": "Google Drive folder 1K7teb5iGkdphV78M773vxlhbNd2fnQxd (shortcuts) via Apps Script (update-spreadsheets.gs)",
   "owner": "gurii.gabreh.0516@gmail.com",
   "items": [
@@ -15,21 +15,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-11T12:59:51.842Z",
-      "modifiedTime": "2026-08-17T20:59:33.782Z"
-    },
-    {
-      "id": "1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw",
-      "title": "実装進捗管理シート",
-      "url": "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit?usp=drivesdk",
-      "category": "マイドライブ",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": false,
-      "createdTime": "2026-07-26T02:42:48.384Z",
-      "modifiedTime": "2026-08-17T20:23:02.168Z"
+      "modifiedTime": "2026-08-18T20:59:35.359Z"
     },
     {
       "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
@@ -45,7 +31,21 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-06-16T23:29:11.621Z",
-      "modifiedTime": "2026-08-17T02:22:13.537Z"
+      "modifiedTime": "2026-08-18T20:24:51.173Z"
+    },
+    {
+      "id": "1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw",
+      "title": "実装進捗管理シート",
+      "url": "https://docs.google.com/spreadsheets/d/1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw/edit?usp=drivesdk",
+      "category": "マイドライブ",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": false,
+      "createdTime": "2026-07-26T02:42:48.384Z",
+      "modifiedTime": "2026-08-18T20:23:10.096Z"
     },
     {
       "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
@@ -61,7 +61,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": true,
       "createdTime": "2026-04-08T14:54:53.243Z",
-      "modifiedTime": "2026-08-17T01:39:38.018Z"
+      "modifiedTime": "2026-08-18T01:38:58.833Z"
     },
     {
       "id": "1lApRylSAFDfVWMkMvNhjUnkKJBg7KUNw-yd0e19KA7o",
