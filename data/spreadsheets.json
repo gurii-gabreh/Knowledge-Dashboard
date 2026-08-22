@@ -1,22 +1,8 @@
 {
-  "generatedAt": "2026-08-21T21:02:47.674Z",
+  "generatedAt": "2026-08-22T21:02:49.207Z",
   "source": "Google Drive folder 1K7teb5iGkdphV78M773vxlhbNd2fnQxd (shortcuts) via Apps Script (update-spreadsheets.gs)",
   "owner": "gurii.gabreh.0516@gmail.com",
   "items": [
-    {
-      "id": "1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY",
-      "title": "CHAPRO PROMPT MANAGER",
-      "url": "https://docs.google.com/spreadsheets/d/1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY/edit?usp=drivesdk",
-      "category": "マイドライブ",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": false,
-      "createdTime": "2026-07-11T12:59:51.842Z",
-      "modifiedTime": "2026-08-21T21:01:32.717Z"
-    },
     {
       "id": "1679CPPuWq4lciwe4BsJTfjJpiZKvKWogETwtauPThYw",
       "title": "実装進捗管理シート",
@@ -29,7 +15,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-26T02:42:48.384Z",
-      "modifiedTime": "2026-08-21T20:23:04.269Z"
+      "modifiedTime": "2026-08-22T20:22:58.858Z"
     },
     {
       "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
@@ -45,28 +31,12 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-06-16T23:29:11.621Z",
-      "modifiedTime": "2026-08-21T02:22:43.139Z"
+      "modifiedTime": "2026-08-22T20:21:46.857Z"
     },
     {
-      "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
-      "title": "スーパーの食品価格一覧",
-      "url": "https://docs.google.com/spreadsheets/d/1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY/edit?usp=drivesdk",
-      "category": "マイドライブ / AI / スーパーの食品価格一覧",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ",
-        "AI",
-        "スーパーの食品価格一覧"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": true,
-      "createdTime": "2026-04-08T14:54:53.243Z",
-      "modifiedTime": "2026-08-21T01:37:18.109Z"
-    },
-    {
-      "id": "1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o",
-      "title": "AI技術情報・活用事例 収集ログ",
-      "url": "https://docs.google.com/spreadsheets/d/1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o/edit?usp=drivesdk",
+      "id": "1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY",
+      "title": "CHAPRO PROMPT MANAGER",
+      "url": "https://docs.google.com/spreadsheets/d/1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY/edit?usp=drivesdk",
       "category": "マイドライブ",
       "folderPath": [
         "マイドライブ",
@@ -74,8 +44,8 @@
       ],
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
-      "createdTime": "2026-07-28T11:23:26.977Z",
-      "modifiedTime": "2026-08-20T10:41:32.643Z"
+      "createdTime": "2026-07-11T12:59:51.842Z",
+      "modifiedTime": "2026-08-22T16:38:35.672Z"
     },
     {
       "id": "1lApRylSAFDfVWMkMvNhjUnkKJBg7KUNw-yd0e19KA7o",
@@ -91,7 +61,37 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-06-07T02:47:23.101Z",
-      "modifiedTime": "2026-08-16T04:41:25.621Z"
+      "modifiedTime": "2026-08-22T08:54:33.519Z"
+    },
+    {
+      "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
+      "title": "スーパーの食品価格一覧",
+      "url": "https://docs.google.com/spreadsheets/d/1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY/edit?usp=drivesdk",
+      "category": "マイドライブ / AI / スーパーの食品価格一覧",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ",
+        "AI",
+        "スーパーの食品価格一覧"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": true,
+      "createdTime": "2026-04-08T14:54:53.243Z",
+      "modifiedTime": "2026-08-22T01:38:19.551Z"
+    },
+    {
+      "id": "1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o",
+      "title": "AI技術情報・活用事例 収集ログ",
+      "url": "https://docs.google.com/spreadsheets/d/1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o/edit?usp=drivesdk",
+      "category": "マイドライブ",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": false,
+      "createdTime": "2026-07-28T11:23:26.977Z",
+      "modifiedTime": "2026-08-20T10:41:32.643Z"
     },
     {
       "id": "1V4bbJTbWvg2e37x7iIFEPbpv4Vc5slelF2-EI6CgouA",
