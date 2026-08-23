@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T21:02:49.207Z",
+  "generatedAt": "2026-08-23T21:02:46.835Z",
   "source": "Google Drive folder 1K7teb5iGkdphV78M773vxlhbNd2fnQxd (shortcuts) via Apps Script (update-spreadsheets.gs)",
   "owner": "gurii.gabreh.0516@gmail.com",
   "items": [
@@ -15,7 +15,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-26T02:42:48.384Z",
-      "modifiedTime": "2026-08-22T20:22:58.858Z"
+      "modifiedTime": "2026-08-23T20:23:01.134Z"
     },
     {
       "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
@@ -31,7 +31,37 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-06-16T23:29:11.621Z",
-      "modifiedTime": "2026-08-22T20:21:46.857Z"
+      "modifiedTime": "2026-08-23T02:22:02.498Z"
+    },
+    {
+      "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
+      "title": "スーパーの食品価格一覧",
+      "url": "https://docs.google.com/spreadsheets/d/1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY/edit?usp=drivesdk",
+      "category": "マイドライブ / AI / スーパーの食品価格一覧",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ",
+        "AI",
+        "スーパーの食品価格一覧"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": true,
+      "createdTime": "2026-04-08T14:54:53.243Z",
+      "modifiedTime": "2026-08-23T01:37:09.283Z"
+    },
+    {
+      "id": "1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o",
+      "title": "AI技術情報・活用事例 収集ログ",
+      "url": "https://docs.google.com/spreadsheets/d/1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o/edit?usp=drivesdk",
+      "category": "マイドライブ",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": false,
+      "createdTime": "2026-07-28T11:23:26.977Z",
+      "modifiedTime": "2026-08-22T22:21:40.039Z"
     },
     {
       "id": "1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY",
@@ -62,36 +92,6 @@
       "shared": false,
       "createdTime": "2026-06-07T02:47:23.101Z",
       "modifiedTime": "2026-08-22T08:54:33.519Z"
-    },
-    {
-      "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
-      "title": "スーパーの食品価格一覧",
-      "url": "https://docs.google.com/spreadsheets/d/1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY/edit?usp=drivesdk",
-      "category": "マイドライブ / AI / スーパーの食品価格一覧",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ",
-        "AI",
-        "スーパーの食品価格一覧"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": true,
-      "createdTime": "2026-04-08T14:54:53.243Z",
-      "modifiedTime": "2026-08-22T01:38:19.551Z"
-    },
-    {
-      "id": "1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o",
-      "title": "AI技術情報・活用事例 収集ログ",
-      "url": "https://docs.google.com/spreadsheets/d/1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o/edit?usp=drivesdk",
-      "category": "マイドライブ",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": false,
-      "createdTime": "2026-07-28T11:23:26.977Z",
-      "modifiedTime": "2026-08-20T10:41:32.643Z"
     },
     {
       "id": "1V4bbJTbWvg2e37x7iIFEPbpv4Vc5slelF2-EI6CgouA",
