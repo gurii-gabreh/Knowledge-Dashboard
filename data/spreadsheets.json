@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26T21:02:46.872Z",
+  "generatedAt": "2026-08-27T21:02:47.394Z",
   "source": "Google Drive folder 1K7teb5iGkdphV78M773vxlhbNd2fnQxd (shortcuts) via Apps Script (update-spreadsheets.gs)",
   "owner": "gurii.gabreh.0516@gmail.com",
   "items": [
@@ -15,7 +15,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-26T02:42:48.384Z",
-      "modifiedTime": "2026-08-26T20:23:00.405Z"
+      "modifiedTime": "2026-08-27T20:22:58.685Z"
     },
     {
       "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
@@ -31,7 +31,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-06-16T23:29:11.621Z",
-      "modifiedTime": "2026-08-26T20:21:57.288Z"
+      "modifiedTime": "2026-08-27T02:21:33.124Z"
     },
     {
       "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
@@ -47,7 +47,21 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": true,
       "createdTime": "2026-04-08T14:54:53.243Z",
-      "modifiedTime": "2026-08-26T01:37:08.028Z"
+      "modifiedTime": "2026-08-27T01:36:52.943Z"
+    },
+    {
+      "id": "1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o",
+      "title": "AI技術情報・活用事例 収集ログ",
+      "url": "https://docs.google.com/spreadsheets/d/1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o/edit?usp=drivesdk",
+      "category": "マイドライブ",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": false,
+      "createdTime": "2026-07-28T11:23:26.977Z",
+      "modifiedTime": "2026-08-26T22:21:39.346Z"
     },
     {
       "id": "1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY",
@@ -62,20 +76,6 @@
       "shared": false,
       "createdTime": "2026-07-11T12:59:51.842Z",
       "modifiedTime": "2026-08-26T00:18:30.368Z"
-    },
-    {
-      "id": "1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o",
-      "title": "AI技術情報・活用事例 収集ログ",
-      "url": "https://docs.google.com/spreadsheets/d/1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o/edit?usp=drivesdk",
-      "category": "マイドライブ",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": false,
-      "createdTime": "2026-07-28T11:23:26.977Z",
-      "modifiedTime": "2026-08-24T22:21:40.014Z"
     },
     {
       "id": "1lApRylSAFDfVWMkMvNhjUnkKJBg7KUNw-yd0e19KA7o",
