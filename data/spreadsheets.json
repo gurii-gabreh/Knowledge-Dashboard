@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T21:02:45.299Z",
+  "generatedAt": "2026-08-31T21:02:57.955Z",
   "source": "Google Drive folder 1K7teb5iGkdphV78M773vxlhbNd2fnQxd (shortcuts) via Apps Script (update-spreadsheets.gs)",
   "owner": "gurii.gabreh.0516@gmail.com",
   "items": [
@@ -15,23 +15,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-26T02:42:48.384Z",
-      "modifiedTime": "2026-08-30T20:22:58.280Z"
-    },
-    {
-      "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
-      "title": "Gemini API通信可能時間調査アプリ",
-      "url": "https://docs.google.com/spreadsheets/d/1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg/edit?usp=drivesdk",
-      "category": "マイドライブ / AI / Gemini API通信可能調査アプリ",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ",
-        "AI",
-        "Gemini API通信可能調査アプリ"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": false,
-      "createdTime": "2026-06-16T23:29:11.621Z",
-      "modifiedTime": "2026-08-30T20:21:33.747Z"
+      "modifiedTime": "2026-08-31T20:23:05.050Z"
     },
     {
       "id": "1MPThq7ZKAZrai_kDHD62eE6vHmkjv0CKIRiFBMYOELE",
@@ -47,7 +31,23 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-03-29T01:29:00.923Z",
-      "modifiedTime": "2026-08-30T02:34:21.799Z"
+      "modifiedTime": "2026-08-31T10:32:21.744Z"
+    },
+    {
+      "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
+      "title": "Gemini API通信可能時間調査アプリ",
+      "url": "https://docs.google.com/spreadsheets/d/1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg/edit?usp=drivesdk",
+      "category": "マイドライブ / AI / Gemini API通信可能調査アプリ",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ",
+        "AI",
+        "Gemini API通信可能調査アプリ"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": false,
+      "createdTime": "2026-06-16T23:29:11.621Z",
+      "modifiedTime": "2026-08-31T02:21:50.067Z"
     },
     {
       "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
@@ -63,7 +63,7 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": true,
       "createdTime": "2026-04-08T14:54:53.243Z",
-      "modifiedTime": "2026-08-30T01:36:55.489Z"
+      "modifiedTime": "2026-08-31T01:36:53.725Z"
     },
     {
       "id": "1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY",
