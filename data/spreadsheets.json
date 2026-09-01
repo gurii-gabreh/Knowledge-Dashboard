@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31T21:02:57.955Z",
+  "generatedAt": "2026-09-01T21:02:55.792Z",
   "source": "Google Drive folder 1K7teb5iGkdphV78M773vxlhbNd2fnQxd (shortcuts) via Apps Script (update-spreadsheets.gs)",
   "owner": "gurii.gabreh.0516@gmail.com",
   "items": [
@@ -15,7 +15,53 @@
       "owner": "gurii.gabreh.0516@gmail.com",
       "shared": false,
       "createdTime": "2026-07-26T02:42:48.384Z",
-      "modifiedTime": "2026-08-31T20:23:05.050Z"
+      "modifiedTime": "2026-09-01T20:23:13.817Z"
+    },
+    {
+      "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
+      "title": "Gemini API通信可能時間調査アプリ",
+      "url": "https://docs.google.com/spreadsheets/d/1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg/edit?usp=drivesdk",
+      "category": "マイドライブ / AI / Gemini API通信可能調査アプリ",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ",
+        "AI",
+        "Gemini API通信可能調査アプリ"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": false,
+      "createdTime": "2026-06-16T23:29:11.621Z",
+      "modifiedTime": "2026-09-01T20:21:34.025Z"
+    },
+    {
+      "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
+      "title": "スーパーの食品価格一覧",
+      "url": "https://docs.google.com/spreadsheets/d/1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY/edit?usp=drivesdk",
+      "category": "マイドライブ / AI / スーパーの食品価格一覧",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ",
+        "AI",
+        "スーパーの食品価格一覧"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": true,
+      "createdTime": "2026-04-08T14:54:53.243Z",
+      "modifiedTime": "2026-09-01T01:37:08.107Z"
+    },
+    {
+      "id": "1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o",
+      "title": "AI技術情報・活用事例 収集ログ",
+      "url": "https://docs.google.com/spreadsheets/d/1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o/edit?usp=drivesdk",
+      "category": "マイドライブ",
+      "folderPath": [
+        "マイドライブ",
+        "マイドライブ"
+      ],
+      "owner": "gurii.gabreh.0516@gmail.com",
+      "shared": false,
+      "createdTime": "2026-07-28T11:23:26.977Z",
+      "modifiedTime": "2026-08-31T22:21:45.771Z"
     },
     {
       "id": "1MPThq7ZKAZrai_kDHD62eE6vHmkjv0CKIRiFBMYOELE",
@@ -34,38 +80,6 @@
       "modifiedTime": "2026-08-31T10:32:21.744Z"
     },
     {
-      "id": "1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg",
-      "title": "Gemini API通信可能時間調査アプリ",
-      "url": "https://docs.google.com/spreadsheets/d/1riOPPhGryYlTzYhep51kpcaOUx5uJKFPI1cYjfnbECg/edit?usp=drivesdk",
-      "category": "マイドライブ / AI / Gemini API通信可能調査アプリ",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ",
-        "AI",
-        "Gemini API通信可能調査アプリ"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": false,
-      "createdTime": "2026-06-16T23:29:11.621Z",
-      "modifiedTime": "2026-08-31T02:21:50.067Z"
-    },
-    {
-      "id": "1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY",
-      "title": "スーパーの食品価格一覧",
-      "url": "https://docs.google.com/spreadsheets/d/1VThcmRG6N-Ui-VmSzKdvLI8vOhfovWUqQsZb2rFJ3TY/edit?usp=drivesdk",
-      "category": "マイドライブ / AI / スーパーの食品価格一覧",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ",
-        "AI",
-        "スーパーの食品価格一覧"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": true,
-      "createdTime": "2026-04-08T14:54:53.243Z",
-      "modifiedTime": "2026-08-31T01:36:53.725Z"
-    },
-    {
       "id": "1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY",
       "title": "CHAPRO PROMPT MANAGER",
       "url": "https://docs.google.com/spreadsheets/d/1a77zJ-ANsQmA7M4Bp2S4BYyDHkT-HzFa2UEy6eaN5jY/edit?usp=drivesdk",
@@ -78,20 +92,6 @@
       "shared": false,
       "createdTime": "2026-07-11T12:59:51.842Z",
       "modifiedTime": "2026-08-30T00:18:23.474Z"
-    },
-    {
-      "id": "1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o",
-      "title": "AI技術情報・活用事例 収集ログ",
-      "url": "https://docs.google.com/spreadsheets/d/1pMTIWgWfPFEUkOh4V7KkDsSSYEeSlBDVNr9_zFxBm_o/edit?usp=drivesdk",
-      "category": "マイドライブ",
-      "folderPath": [
-        "マイドライブ",
-        "マイドライブ"
-      ],
-      "owner": "gurii.gabreh.0516@gmail.com",
-      "shared": false,
-      "createdTime": "2026-07-28T11:23:26.977Z",
-      "modifiedTime": "2026-08-29T22:21:39.063Z"
     },
     {
       "id": "1lApRylSAFDfVWMkMvNhjUnkKJBg7KUNw-yd0e19KA7o",
