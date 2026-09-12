@@ -365,10 +365,56 @@
   }
   footer .note { max-width: 60ch; }
 
+  .chip-toggle-btn, .tab-toggle-btn { display: none; }
+
   @media (max-width: 640px) {
     .stats { grid-template-columns: repeat(2, 1fr); }
     td.col-owner { display: none; }
     thead th.col-owner { display: none; }
+
+    /* モバイル幅でのタブ切替UI: 3タブが1行に収まりきらず窮屈にラップしていたため、
+       トグルボタン押下時のみ縦並びドロップダウンとして表示する方式に変更(携帯でのレイアウト崩れ対策)。
+       デスクトップ幅(このmedia外)では従来通り常時表示のまま挙動は変えない。 */
+    .tab-toggle-btn { display: inline-flex !important; margin: 20px 0 0; }
+    .tab-row {
+      display: none !important;
+      flex-direction: column;
+      gap: 4px;
+      margin: 10px 0 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 6px;
+    }
+    .tab-row.mobile-open { display: flex !important; }
+    .tab-row .tab-btn {
+      text-align: left;
+      padding: 10px 12px;
+      margin-bottom: 0;
+      border-bottom: none;
+      border-radius: 8px;
+    }
+    .tab-row .tab-btn.active { background: var(--accent-soft); }
+
+    /* 実装ナレッジタブのリポジトリ/種類絞り込みチップも同様に、
+       トグルボタン押下時のみドロップダウン表示にする */
+    .chip-toggle-btn { display: inline-flex !important; }
+    .chip-wrap {
+      display: none !important;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+      margin-top: -12px;
+      margin-bottom: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .chip-wrap.mobile-open { display: flex !important; }
+    .chip-wrap .chip-row { margin-bottom: 0; }
+    .chip-wrap .chip { width: 100%; box-sizing: border-box; }
   }
 
   .modal-overlay {
@@ -683,7 +729,11 @@
     データは <code>data/spreadsheets.json</code> を元に生成しています。
   </p>
 
-  <div class="tab-row" role="tablist">
+  <button type="button" id="tabToggleBtn" class="icon-btn tab-toggle-btn" aria-expanded="false" aria-controls="tabRow" onclick="toggleTabRow()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <span id="tabToggleLabel">ナレッジデータ一覧</span>
+  </button>
+  <div class="tab-row" role="tablist" id="tabRow">
     <button type="button" class="tab-btn active" id="tabBtnSheets" role="tab" aria-selected="true">📊 ナレッジデータ一覧</button>
     <button type="button" class="tab-btn" id="tabBtnKnowledge" role="tab" aria-selected="false">🧠 実装ナレッジ</button>
     <button type="button" class="tab-btn" id="tabBtnApps" role="tab" aria-selected="false">📱 アプリ一覧</button>
@@ -738,8 +788,14 @@
       </select>
     </div>
 
-    <div class="chip-row" id="kRepoChipRow"></div>
-    <div class="chip-row" id="kTypeChipRow"></div>
+    <button type="button" id="kChipToggleBtn" class="icon-btn chip-toggle-btn" aria-expanded="false" aria-controls="kChipWrap" onclick="toggleKChipWrap()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      リポジトリ・種類で絞り込み
+    </button>
+    <div class="chip-wrap" id="kChipWrap">
+      <div class="chip-row" id="kRepoChipRow"></div>
+      <div class="chip-row" id="kTypeChipRow"></div>
+    </div>
 
     <div class="k-list" id="kList"></div>
     <div class="k-state" id="kState" style="display:none;"></div>
@@ -1296,6 +1352,7 @@ function renderKChips() {
       if (kActiveRepos.has(r)) kActiveRepos.delete(r); else kActiveRepos.add(r);
       renderKChips();
       renderKList();
+      closeKChipWrapOnMobile();
     });
   });
 
@@ -1310,8 +1367,23 @@ function renderKChips() {
       if (kActiveTypes.has(t)) kActiveTypes.delete(t); else kActiveTypes.add(t);
       renderKChips();
       renderKList();
+      closeKChipWrapOnMobile();
     });
   });
+}
+
+// モバイル幅でのみ、実装ナレッジタブのリポジトリ/種類絞り込みチップをドロップダウンとして開閉する。
+// デスクトップ幅では常時表示のままで挙動は変えない。
+function toggleKChipWrap() {
+  const wrap = document.getElementById("kChipWrap");
+  const btn = document.getElementById("kChipToggleBtn");
+  const open = wrap.classList.toggle("mobile-open");
+  btn.setAttribute("aria-expanded", open ? "true" : "false");
+}
+function closeKChipWrapOnMobile() {
+  if (!window.matchMedia("(max-width: 640px)").matches) return;
+  document.getElementById("kChipWrap").classList.remove("mobile-open");
+  document.getElementById("kChipToggleBtn").setAttribute("aria-expanded", "false");
 }
 
 function kCardKey(item, idx) { return item.id ? `${item.type}:${item.id}` : `${item.type}:${idx}`; }
@@ -1461,11 +1533,30 @@ function showTab(tab) {
   const def = TAB_DEFS[tab];
   document.getElementById("pageTitle").textContent = def.title;
   document.getElementById("pageSubtitle").innerHTML = def.subtitle;
+  const toggleLabel = document.getElementById("tabToggleLabel");
+  if (toggleLabel) toggleLabel.textContent = def.title;
   if (def.onShow) def.onShow();
+  closeTabRowOnMobile();
 }
 
 for (const [key, def] of Object.entries(TAB_DEFS)) {
   def.btn.addEventListener("click", () => showTab(key));
+}
+
+// モバイル幅でのみ、タブ切替メニュー(tab-row)をドロップダウンとして開閉する。
+// デスクトップ幅では常時表示のままで挙動は変えない。
+function toggleTabRow() {
+  const row = document.getElementById("tabRow");
+  const btn = document.getElementById("tabToggleBtn");
+  const open = row.classList.toggle("mobile-open");
+  btn.setAttribute("aria-expanded", open ? "true" : "false");
+}
+function closeTabRowOnMobile() {
+  if (!window.matchMedia("(max-width: 640px)").matches) return;
+  const row = document.getElementById("tabRow");
+  if (row) row.classList.remove("mobile-open");
+  const btn = document.getElementById("tabToggleBtn");
+  if (btn) btn.setAttribute("aria-expanded", "false");
 }
 </script>
 </body>
